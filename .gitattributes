@@ -1,0 +1,19 @@
+# Auto-detect text files and normalize line endings to LF on commit
+* text=auto
+
+# Keep Unity text files and assets consistent
+*.cs text diff=csharp
+*.cginc text
+*.shader text
+*.meta text
+*.mat text
+*.prefab text
+*.unity text
+
+# Keep binary assets untouched
+*.png binary
+*.jpg binary
+*.psd binary
+*.asset binary
+*.ttf binary
+*.otf binary
