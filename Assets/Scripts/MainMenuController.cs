@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class QuitMenuController : MonoBehaviour
+public class MainMenuController : MonoBehaviour
 {
     // MUST be public so the button can find it
     public void OnExitClick()
@@ -19,4 +19,6 @@ public class QuitMenuController : MonoBehaviour
         #endif
 
     }
+
+    
 }
