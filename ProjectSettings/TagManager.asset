@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -49,6 +50,9 @@ TagManager:
     locked: 0
   - name: Characters
     uniqueID: 2141820095
+    locked: 0
+  - name: Player
+    uniqueID: 209962395
     locked: 0
   - name: Foreground
     uniqueID: 3818428007
