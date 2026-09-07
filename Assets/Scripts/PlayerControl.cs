@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     [Header("Health/Damage Settings")]
     [SerializeField] int maxHealth;
     [SerializeField] float invincibleTime;
-    [SerializeField] float flashInterval;
+    [SerializeField] float flashMultiplier;
 
     // Player components
     Rigidbody2D rb;
@@ -35,15 +35,15 @@ public class PlayerControl : MonoBehaviour
     // Player state
     bool isDashing;
     bool isRecoiling;
-    bool isInvincible;
-
-    int curHealth;
+    public bool IsInvincible { get; private set; }
+    public int CurrentHealth { get; private set; }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         lastMoveDirection = new Vector2(0, 1);
+        CurrentHealth = maxHealth;
     }
 
     void Update()
@@ -121,12 +121,13 @@ public class PlayerControl : MonoBehaviour
     // Used by hazards (e.g. bullets) to deal damage
     public void TakeDamage(Vector2 hitPosition, int increment)
     {
-        curHealth -= increment;
+        CurrentHealth -= increment;
         TriggerRecoil(hitPosition);
         BeginInvincibity();
 
-        if (curHealth <= 0)
-        {
+        if (CurrentHealth <= 0)
+        {   
+            Debug.Log("you died");
             // TODO: trigger death scene, reload level, reset health
         }
     }
@@ -146,7 +147,7 @@ public class PlayerControl : MonoBehaviour
         float timer = 0;
         while (timer < recoilTime)
         {
-            // Player's movement is not affected by input
+            // Player can not control character's moving direction
             rb.linearVelocity = direction * recoilSpeed; 
             timer += Time.deltaTime;
             yield return null;
@@ -157,36 +158,30 @@ public class PlayerControl : MonoBehaviour
 
     void BeginInvincibity()
     {
-        if (isInvincible) return;
+        if (IsInvincible) return;
         StartCoroutine(InvincibleRoutine());
     }
 
     IEnumerator InvincibleRoutine()
     {
-        isInvincible = true;
+        IsInvincible = true;
         
         float timer = 0f;
-        bool visible = false;
         while (timer < invincibleTime)
         {
-            // Flash player sprite
-            visible = !visible;
-            sr.enabled = visible;
-
-            yield return new WaitForSeconds(flashInterval);
-            timer += flashInterval;
+            // Flash player's sprite by changing alpha
+            Color c = sr.color;
+            float whatever = Mathf.PingPong(timer * flashMultiplier, 1f);
+            c.a = Mathf.Lerp(0.3f, 1f, whatever);
+            Debug.Log("pingpong: " + whatever);
+            Debug.Log(c.a);
+            sr.color = c;
+            yield return null;
+            timer += Time.deltaTime;
         }
-        sr.enabled = true;
-        isInvincible = false;
-    }
-
-    public int GetHealth()
-    {
-        return curHealth;
-    }
-
-    public bool IsInvincible()
-    {
-        return isInvincible;
+        IsInvincible = false;
+        Color c2 = sr.color;
+        c2.a = 1f;
+        sr.color = c2;
     }
 }
