@@ -8,7 +8,7 @@ public class Shooter : MonoBehaviour
     [SerializeField] BulletVolley volley;
     [SerializeField] Bullet bulletPrefab;
     [SerializeField] float interval;
-    [SerializeField] Vector2 facing = Vector2.up;
+    Vector2 facing = Vector2.right;
     bool isFiring;
     
 
@@ -49,8 +49,8 @@ public class Shooter : MonoBehaviour
             Quaternion bulletRot = transform.rotation * Quaternion.Euler(0, 0, info.angle);
 
             Bullet bullet = Instantiate(bulletPrefab, worldPos, bulletRot);
-            info.motion.heading = (Vector2)(bulletRot * facing);
             bullet.Motion = info.motion;
+            bullet.Heading = (Vector2)(bulletRot * facing);
         }
     }
 }

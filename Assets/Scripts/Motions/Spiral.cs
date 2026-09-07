@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Move/Spiral")]
 public class Spiral : MotionMath
 {
-    public override Vector2 Evaluate(float t)
+    public override Vector2 Evaluate(float t, Vector2 heading)
     {
         t *= speed;
         Vector2 forward = heading.normalized;

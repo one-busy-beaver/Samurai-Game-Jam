@@ -31,7 +31,7 @@ public class Spread : BulletVolley
         {
             float angle = min + inc * i;
             float rad = angle * Mathf.Deg2Rad;
-            Vector2 pos = new Vector2(Mathf.Sin(rad) * radius, Mathf.Cos(rad) * radius);
+            Vector2 pos = new Vector2(Mathf.Cos(rad) * radius, Mathf.Sin(rad) * radius);
 
             BulletSpawnInfo info = new BulletSpawnInfo 
             { 

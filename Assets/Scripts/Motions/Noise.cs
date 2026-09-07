@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Move/Noise")]
 public class Noise : MotionMath
 {
-    public override Vector2 Evaluate(float t)
+    public override Vector2 Evaluate(float t, Vector2 heading)
     {
         t *= speed;
         Vector2 forward = heading.normalized;

@@ -12,8 +12,8 @@ public class Parallel : BulletVolley
         var list = new List<BulletSpawnInfo>(count);
         for (int i = 0; i < count; i++)
         {
-            float posX = min + spacing * i;
-            Vector2 pos = new Vector2(posX, displacement);
+            float lateralDisplacement = min + spacing * i;
+            Vector2 pos = new Vector2(displacement, lateralDisplacement);
 
             BulletSpawnInfo info = new BulletSpawnInfo 
             { 

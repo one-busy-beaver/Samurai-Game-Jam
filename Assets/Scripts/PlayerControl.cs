@@ -92,6 +92,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator DashRoutine()
     {
         isDashing = true;
+        IsInvincible = true;
         canDash = false;
         Vector2 dashDir = moveInput;
         if (dashDir == Vector2.zero) dashDir = lastMoveDirection;
@@ -110,6 +111,7 @@ public class PlayerControl : MonoBehaviour
             yield return null;
         }
         isDashing = false;
+        IsInvincible = false;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
