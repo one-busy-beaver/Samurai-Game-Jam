@@ -1090,6 +1090,7 @@ GameObject:
   - component: {fileID: 1123315853}
   - component: {fileID: 1123315852}
   - component: {fileID: 1123315851}
+  - component: {fileID: 1123315855}
   m_Layer: 5
   m_Name: MenuButtons
   m_TagString: Untagged
@@ -1210,6 +1211,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1123315855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123315849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660b7ad22530cac47adbd8c5b824f077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
 --- !u!1 &1229215800
 GameObject:
   m_ObjectHideFlags: 0

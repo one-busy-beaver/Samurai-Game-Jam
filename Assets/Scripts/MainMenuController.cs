@@ -25,5 +25,14 @@ public class MainMenuController : MonoBehaviour
         // Application.Quit();
     }
 
+    public void OnOptions()
+    {
+        // shit here
+    }
 
+    public void OnCredits()
+    {
+        // names of everyone!!!
+        
+    }
 }

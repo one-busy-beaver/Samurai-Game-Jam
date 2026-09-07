@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PauseController : MonoBehaviour
 {
-    public GameObject container;
+    [SerializeField] public GameObject container;
 
     private bool isPaused = false;
 
