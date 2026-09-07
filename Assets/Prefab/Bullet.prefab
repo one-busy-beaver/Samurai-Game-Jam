@@ -169,5 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3955f6486c15a2748a5c4f54195286b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  def: {fileID: 0}
-  move: {fileID: 0}
+  damage: 1
+  motion: {fileID: 11400000, guid: 7e021e7d82e39e9459de4adb65985d7c, type: 2}

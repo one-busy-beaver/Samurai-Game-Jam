@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-using System;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -78,8 +77,8 @@ public class PlayerControl : MonoBehaviour
     void Move()
     {
         if (moveInput.magnitude != 0) lastMoveDirection = moveInput;
-        if (!isDashing)
-            rb.linearVelocity = new Vector2(moveSpeed * moveInput.x, moveSpeed * moveInput.y);
+        if (isDashing) return;
+        rb.linearVelocity = new Vector2(moveSpeed * moveInput.x, moveSpeed * moveInput.y);
     }
 
     // Control player's dash ability
@@ -111,7 +110,6 @@ public class PlayerControl : MonoBehaviour
             yield return null;
         }
         isDashing = false;
-
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }

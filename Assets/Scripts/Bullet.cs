@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] BulletDef def;
-    [SerializeField] MoveModule move;
-    BulletState state;
+    [SerializeField] int damage;
+    
+    public MotionMath Motion { get; set; }
+    Vector2 startPosition;
+    float time;
 
+    void Start()
+    {
+        startPosition = transform.position;
+    }
 
     void Update()
     {
-        move.Step(ref state, Time.deltaTime);
-        transform.position = state.position;
+        Move();
+    }
+
+    void Move()
+    {
+        time += Time.deltaTime;
+        Vector2 offset = Motion.Evaluate(time);
+        transform.position = startPosition + offset;
     }
 
     void OnTriggerStay2D(Collider2D collision)
@@ -20,7 +32,7 @@ public class Bullet : MonoBehaviour
             PlayerControl player = collision.GetComponent<PlayerControl>();
             if (player != null && !player.IsInvincible)
             {
-                player.TakeDamage(transform.position, def.damage);
+                player.TakeDamage(transform.position, damage);
             }
         }
     }
@@ -30,25 +42,4 @@ public class Bullet : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-    // Called by Emitter immediately after Instantiate.
-    public void Launch(BulletDef def, Vector2 direction, int index, int total)
-    {
-        this.def = def;
-        Vector2 heading = direction.normalized;
-
-        state = new BulletState
-        {
-            position      = transform.position,
-            heading       = heading,
-            speed         = def.speed,
-            age           = 0f,
-            spawnPosition = transform.position,
-            spawnHeading  = heading,
-            index         = index,
-            total         = total
-        };
-        transform.position = state.position;
-    }
-
 }
