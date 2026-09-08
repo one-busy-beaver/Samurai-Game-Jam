@@ -21,6 +21,7 @@ public class Bullet : MonoBehaviour
 
     void Move()
     {
+        if (Motion == null) return;
         time += Time.deltaTime;
         Vector2 offset = Motion.Evaluate(time, Heading);
         transform.position = startPosition + offset;

@@ -678,9 +678,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f196d131fea4be48aa52c8c5c431995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathScreenController
-  promptText: {fileID: 1106548832}
+  promptText: {fileID: 1106548834}
   targetSceneName: MainMenu
-  deathPanelFader: {fileID: 0}
+  deathPanelFader: {fileID: 1703030243}
   promptDelay: 2
   fadeDuration: 1
 --- !u!1 &1607885248

@@ -22,6 +22,16 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] float invincibleTime;
     [SerializeField] float flashMultiplier;
 
+    // Player Sprites
+    [SerializeField] private Sprite spriteUp;
+    [SerializeField] private Sprite spriteDown;
+    [SerializeField] private Sprite spriteLeft;
+    [SerializeField] private Sprite spriteRight;
+
+    // Flash Colors
+    [SerializeField] private Color damageFlashColor = Color.red;
+    private readonly Color normalColor = Color.white;
+
     // Player components
     Rigidbody2D rb;
     SpriteRenderer sr;
@@ -37,6 +47,26 @@ public class PlayerControl : MonoBehaviour
     bool isRecoiling;
     public bool IsInvincible { get; private set; }
     public int CurrentHealth { get; private set; }
+
+    // updating sprite direction
+    void UpdateSpriteDirection()
+    {
+        // player is stationary. don't change facing sprite
+        if (moveInput == Vector2.zero) return;
+
+        if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+        {
+            // horizontal movement
+            if (moveInput.x > 0) sr.sprite = spriteRight;
+            else sr.sprite = spriteLeft;
+        }
+        else
+        {
+            // vertical movement
+            if (moveInput.y > 0) sr.sprite = spriteUp;
+            else sr.sprite = spriteDown;
+        }
+    }
 
     // Health Manager
     [SerializeField] private HeartManager heartManager; // I added this
@@ -57,7 +87,7 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         ReadInput();
-        // Move();
+        UpdateSpriteDirection();
         HandleDash();
     }
 
@@ -210,19 +240,18 @@ public class PlayerControl : MonoBehaviour
         float timer = 0f;
         while (timer < invincibleTime)
         {
-            // Flash player's sprite by changing alpha
-            Color c = sr.color;
-            float whatever = Mathf.PingPong(timer * flashMultiplier, 1f);
-            c.a = Mathf.Lerp(0.3f, 1f, whatever);
-            Debug.Log("pingpong: " + whatever);
-            Debug.Log(c.a);
-            sr.color = c;
-            yield return null;
+            // PingPong-ing from 0.0 to 1.0
+            float flashT = Mathf.PingPong(timer * flashMultiplier, 1f);
+
+            // lerp between base white and red
+            sr.color = Color.Lerp(normalColor, damageFlashColor, flashT);
+
             timer += Time.deltaTime;
+            yield return null;
         }
+
+        // reset cleanly back to full whtie
+        sr.color = normalColor;
         IsInvincible = false;
-        Color c2 = sr.color;
-        c2.a = 1f;
-        sr.color = c2;
     }
 }

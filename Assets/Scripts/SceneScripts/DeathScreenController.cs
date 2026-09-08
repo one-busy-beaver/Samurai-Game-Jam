@@ -2,14 +2,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class DeathScreenController : MonoBehaviour
 {
-    [SerializeField] private GameObject promptText;
+    [SerializeField] private TextMeshProUGUI promptText;
     [SerializeField] private string targetSceneName = "MainMenu"; // TODO: levels
     [SerializeField] private UIFader deathPanelFader;
-    [SerializeField] private float promptDelay = 5f;
+    [SerializeField] private float promptDelay = 2f;
     [SerializeField] private float fadeDuration = 1f;
+
+    private float flashMultiplier = 2f;
+    SpriteRenderer sr;
+    Color32 yellow = new Color32(255, 242, 121, 255);
+    Color32 transparent = new Color32(255, 242, 121, 0);
 
     private bool canRestart = false;
     private bool isTransitioning = false;
@@ -18,7 +24,7 @@ public class DeathScreenController : MonoBehaviour
     {
         if (promptText != null) // hide text
         {
-            promptText.SetActive(false);
+            promptText.gameObject.SetActive(false);
         }
 
         StartCoroutine(ShowPrompt());
@@ -35,7 +41,7 @@ public class DeathScreenController : MonoBehaviour
         }
     }
 
-    public void OnPlayerDefeated() // I'm getting an error :(((
+    public void OnPlayerDefeated()
     {
         if (deathPanelFader != null)
         {
@@ -49,10 +55,25 @@ public class DeathScreenController : MonoBehaviour
 
         if (promptText != null) // show text
         {
-            promptText.SetActive(true);
+            promptText.gameObject.SetActive(true);
         }
 
         canRestart = true;
+        
+        // flashing text
+        float timer = 0f;
+        while (!isTransitioning)
+        {
+            timer += Time.unscaledDeltaTime;
+            float flashT = Mathf.PingPong(timer * flashMultiplier, 1f);
+
+            if (promptText != null)
+            {
+                promptText.color = Color.Lerp(yellow, transparent, flashT);
+            }
+
+            yield return null;
+        }
     }
 
     private void TriggerTransition()

@@ -6,10 +6,10 @@ public class UIFader : MonoBehaviour
 {
     public enum FadeMode
     {
-        None,           // Waits for manual script calls (FadeIn / FadeOut)
-        FadeInOnly,     // Starts hidden (alpha 0), fades to visible (alpha 1)
-        FadeOutOnly,    // Starts visible (alpha 1), fades to hidden (alpha 0)
-        FadeInAndOut    // Fades in, pauses, then fades back out
+        None,           // waits for manual script calls (FadeIn / FadeOut)
+        FadeInOnly,     // starts hidden (alpha 0), fades to visible (alpha 1)
+        FadeOutOnly,    // starts visible (alpha 1), fades to hidden (alpha 0)
+        FadeInAndOut    // fades in, pauses, then fades back out
     }
 
     [Header("Mode & Triggers")]
@@ -49,7 +49,7 @@ public class UIFader : MonoBehaviour
                 break;
 
             case FadeMode.None:
-                // Leaves current CanvasGroup alpha untouched until triggered via code
+                // leaves current CanvasGroup alpha untouched until triggered via code
                 break;
         }
     }
