@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Volley/Chevron")]
 public class Chevron : BulletVolley
 {
-    [SerializeField] float chevronHeight; // Positive for '>', Negative for '<'
+    [SerializeField] float chevronDepth; // Positive for '>', Negative for '<'
     [SerializeField] float spreadAngle;
     [SerializeField] float displacement;
 
@@ -28,7 +28,7 @@ public class Chevron : BulletVolley
         {
             int rank = i - half; // Distance from center: e.g. -2, -1, 0, 1, 2
             float y = rank * spacing;
-            float x = displacement - Mathf.Abs(rank) * chevronHeight; // Creates the V shape
+            float x = displacement - Mathf.Abs(rank) * chevronDepth; // Creates the V shape
 
             float angle = rank / (float)half * (spreadAngle * 0.5f);
 

@@ -43,6 +43,9 @@ public class PlayerControl : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         lastMoveDirection = new Vector2(0, 1);
         CurrentHealth = maxHealth;
+
+        // Allow all enemies to know player's location
+        Shooter.PlayerTarget = transform; 
     }
 
     void Update()
@@ -73,22 +76,20 @@ public class PlayerControl : MonoBehaviour
 
     /* MOVEMENTS */
 
-    // Control player's basic movement
     void Move()
     {
+        // We always want a non-zero dash direction
         if (moveInput.magnitude != 0) lastMoveDirection = moveInput;
         if (isDashing) return;
         rb.linearVelocity = new Vector2(moveSpeed * moveInput.x, moveSpeed * moveInput.y);
     }
 
-    // Control player's dash ability
     void HandleDash()
     {
         if (dashPressed && canDash && !isDashing)
             StartCoroutine(DashRoutine());
     }
 
-    // The heavy lifting part of dash
     IEnumerator DashRoutine()
     {
         isDashing = true;
@@ -171,10 +172,8 @@ public class PlayerControl : MonoBehaviour
         {
             // Flash player's sprite by changing alpha
             Color c = sr.color;
-            float whatever = Mathf.PingPong(timer * flashMultiplier, 1f);
-            c.a = Mathf.Lerp(0.3f, 1f, whatever);
-            Debug.Log("pingpong: " + whatever);
-            Debug.Log(c.a);
+            float t = Mathf.PingPong(timer * flashMultiplier, 1f);
+            c.a = Mathf.Lerp(0.1f, 1f, t);
             sr.color = c;
             yield return null;
             timer += Time.deltaTime;

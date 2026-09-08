@@ -5,9 +5,21 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+    public static Transform PlayerTarget; // player's location
+
+     [Header("Bullet Settings")]
     [SerializeField] BulletVolley volley;
     [SerializeField] Bullet bulletPrefab;
-    [SerializeField] float interval;
+
+    [Header("Interval Settings")]
+    [SerializeField] float burstInterval;
+    [SerializeField] int burstCount;
+    [SerializeField] float breakInterval;
+
+    [Header("Aiming Settings")]
+    [SerializeField] bool aimsPlayer;
+    [SerializeField] float turnSpeed;
+
     Vector2 facing = Vector2.right;
     bool isFiring;
     
@@ -15,13 +27,23 @@ public class Shooter : MonoBehaviour
     void Update()
     {
         Walk();
-        Aim();
+        if (aimsPlayer)
+            Aim();
         HandleFire();
     }
 
-    // TODO: implement these
+    // TODO: implement this
     void Walk(){}
-    void Aim(){}
+    void Aim()
+    {
+        Vector2 direction = (Vector2)PlayerTarget.position - (Vector2)transform.position;
+        if (direction == Vector2.zero) return;
+
+        // Calculate angle in degrees
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+    }
 
     void HandleFire()
     {
@@ -32,8 +54,12 @@ public class Shooter : MonoBehaviour
     IEnumerator FireRoutine()
     {
         isFiring = true;
-        Fire();
-        yield return new WaitForSeconds(interval);
+        for (int i = 0; i < burstCount; i++)
+        {
+            Fire();
+            if (i < burstCount - 1) yield return new WaitForSeconds(burstInterval);
+        }
+        yield return new WaitForSeconds(breakInterval);
         isFiring = false;
     }
 
