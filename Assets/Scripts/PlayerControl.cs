@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -37,19 +38,33 @@ public class PlayerControl : MonoBehaviour
     public bool IsInvincible { get; private set; }
     public int CurrentHealth { get; private set; }
 
+    // Health Manager
+    [SerializeField] private HeartManager heartManager; // I added this
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         lastMoveDirection = new Vector2(0, 1);
         CurrentHealth = maxHealth;
+
+        if (heartManager != null)
+        {
+            heartManager.InitializeHearts(maxHealth);
+        }
     }
 
     void Update()
     {
         ReadInput();
-        Move();
+        // Move();
         HandleDash();
+    }
+
+    void FixedUpdate()
+    {
+        // keep Move() here to avoid jitter in monitors different from 50Hz
+        Move();
     }
 
     void ReadInput()
@@ -67,7 +82,9 @@ public class PlayerControl : MonoBehaviour
         moveInput.Normalize();
 
         dashPressed = false;
-        if (keyboard.spaceKey.isPressed) dashPressed = true;
+        if (keyboard.spaceKey.wasPressedThisFrame || keyboard.shiftKey.wasPressedThisFrame) {
+            dashPressed = true;
+        }
         
     }
 
@@ -121,14 +138,38 @@ public class PlayerControl : MonoBehaviour
     // Used by hazards (e.g. bullets) to deal damage
     public void TakeDamage(Vector2 hitPosition, int increment)
     {
-        CurrentHealth -= increment;
-        TriggerRecoil(hitPosition);
-        BeginInvincibity();
+        if (IsInvincible) return; // no damage taken
 
-        if (CurrentHealth <= 0)
+        CurrentHealth = Mathf.Max(0, CurrentHealth - increment);
+
+        if (heartManager != null) // update hearts UI
+        {
+            heartManager.UpdateHearts(CurrentHealth);
+        }
+    
+        if (CurrentHealth == 0)
         {   
             Debug.Log("you died");
-            // TODO: trigger death scene, reload level, reset health
+
+            // switch to death screen
+            SceneManager.LoadScene("DeathScene");
+
+            return;
+
+            // TODO: reload level
+        }
+
+        TriggerRecoil(hitPosition);
+        BeginInvincibity();
+    }
+
+    // heal maychance?
+    public void Heal(int amount)
+    {
+        CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + amount);
+        if (heartManager != null)
+        {
+            heartManager.UpdateHearts(CurrentHealth);
         }
     }
 

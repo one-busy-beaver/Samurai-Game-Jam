@@ -6,10 +6,19 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
     // MUST be public so the button can find it
+    [SerializeField] private string gameplaySceneName = "SampleScene";
+    [SerializeField] private float transitionDuration = 1f;
 
     public void OnStartClick()
     {
-        SceneManager.LoadScene("SampleScene");
+        if (SceneFader.Instance != null)
+        {
+            SceneFader.Instance.FadeAndLoad(gameplaySceneName, transitionDuration);
+        }
+        else
+        {
+            SceneManager.LoadScene(gameplaySceneName);
+        }
     }
     public void OnExitClick()
     {
