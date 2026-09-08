@@ -73,7 +73,15 @@ namespace Ink.UnityIntegration {
 		
 		public static void CreateNewInkFileAtPathWithTemplateAndStartNameEditing (string filePath, string templateFileLocation) {
 			if(Path.GetExtension(filePath) != inkFileExtension) filePath += inkFileExtension;
-			ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<CreateInkAssetAction>(), filePath, InkBrowserIcons.inkFileIcon, templateFileLocation);
+						#pragma warning disable CS0618
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
+				0,
+				ScriptableObject.CreateInstance<CreateInkAssetAction>(),
+				filePath,
+				InkBrowserIcons.inkFileIcon,
+				templateFileLocation
+			);
+			#pragma warning restore CS0618ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<CreateInkAssetAction>(), filePath, InkBrowserIcons.inkFileIcon, templateFileLocation);
 		}
 
 		public static DefaultAsset CreateNewInkFileAtPath (string filePath, string text) {
