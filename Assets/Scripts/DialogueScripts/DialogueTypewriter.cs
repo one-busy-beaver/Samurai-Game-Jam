@@ -8,11 +8,15 @@ using Ink.Runtime;
 
 public class DialogueTypewriter : MonoBehaviour
 {
+    [Header("Ink Narrative File")]
+    [Tooltip("Drop your compiled Ink .json file here")]
+    [SerializeField] private TextAsset inkJSONAsset;
+    [SerializeField] private bool playOnStart = true;
+
     [Header("UI References")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private UIFader fader;
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private TextMeshProUGUI narrativeText;
 
     [Header("Typewriter Timing")]
     [SerializeField] private float charactersPerSecond = 35f;
@@ -59,15 +63,28 @@ public class DialogueTypewriter : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Call this from any script to play a narrative file
-    /// </summary>
-    public void PlayNarrative(TextAsset inkAsset, Action onComplete = null)
+    private void Start()
     {
-        if (inkAsset == null) return;
+        if (playOnStart && inkJSONAsset != null)
+        {
+            PlayNarrative(inkJSONAsset);
+        }
+    }
+
+    /// <summary>
+    /// Play with a custom asset or an optional callback when finished
+    /// </summary>
+    public void PlayNarrative(TextAsset storyAsset = null, Action onComplete = null)
+    {
+        TextAsset assetToLoad = storyAsset != null ? storyAsset : inkJSONAsset;
+        if (assetToLoad == null)
+        {
+            Debug.LogWarning("No Ink JSON Asset assigned to DialogueTypewriter!");
+            return;
+        }
 
         onCompleteCallback = onComplete;
-        currentStory = new Story(inkAsset.text);
+        currentStory = new Story(assetToLoad.text);
         isEnding = false;
 
         if (canvasGroup != null)
@@ -92,8 +109,9 @@ public class DialogueTypewriter : MonoBehaviour
     {
         if (currentStory == null || isEnding) return;
 
-        bool interactPressed = (Keyboard.current != null && (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.enterKey.wasPressedThisFrame))
-                               || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
+        bool interactPressed = (Keyboard.current != null && 
+            (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.enterKey.wasPressedThisFrame))
+            || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
 
         if (interactPressed)
         {
@@ -115,9 +133,7 @@ public class DialogueTypewriter : MonoBehaviour
             string line = currentStory.Continue().Trim();
             List<string> tags = currentStory.currentTags;
 
-            string speaker = ParseTagValue(tags, "speaker");
-            if (nameText != null) nameText.text = speaker;
-
+            // Resolve color from tags (# color: red) or Ink VAR (text_color)
             ResolveColor(tags);
 
             if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
@@ -159,11 +175,19 @@ public class DialogueTypewriter : MonoBehaviour
             return;
         }
 
-        if (currentStory.variablesState["text_color"] != null)
+        // Optional: check for VAR text_color declared inside the ink file
+        try
         {
-            string inkVarColor = currentStory.variablesState["text_color"].ToString();
-            activeTextColor = GetColorFromKey(inkVarColor);
-            return;
+            if (currentStory.variablesState["text_color"] != null)
+            {
+                string inkVarColor = currentStory.variablesState["text_color"].ToString();
+                activeTextColor = GetColorFromKey(inkVarColor);
+                return;
+            }
+        }
+        catch
+        {
+            // Variable wasn't declared in this ink file, safely ignore
         }
 
         activeTextColor = GetColorFromKey("white");
@@ -190,7 +214,9 @@ public class DialogueTypewriter : MonoBehaviour
         {
             string t = tags[i].Trim();
             if (t.StartsWith(prefix + ":", StringComparison.OrdinalIgnoreCase))
+            {
                 return t.Substring(prefix.Length + 1).Trim();
+            }
         }
         return "";
     }
@@ -199,18 +225,18 @@ public class DialogueTypewriter : MonoBehaviour
     {
         isTyping = true;
         string hexColor = ColorUtility.ToHtmlStringRGBA(color);
-        dialogueText.text = $"<color=#{hexColor}>{rawText}</color>";
+        narrativeText.text = $"<color=#{hexColor}>{rawText}</color>";
 
-        dialogueText.maxVisibleCharacters = 0;
-        dialogueText.ForceMeshUpdate();
+        narrativeText.maxVisibleCharacters = 0;
+        narrativeText.ForceMeshUpdate();
 
-        TMP_TextInfo textInfo = dialogueText.textInfo;
+        TMP_TextInfo textInfo = narrativeText.textInfo;
         int totalCharacters = textInfo.characterCount;
         float charDelay = 1f / Mathf.Max(1f, charactersPerSecond);
 
         for (int visibleCount = 1; visibleCount <= totalCharacters; visibleCount++)
         {
-            dialogueText.maxVisibleCharacters = visibleCount;
+            narrativeText.maxVisibleCharacters = visibleCount;
             char currentChar = textInfo.characterInfo[visibleCount - 1].character;
 
             if (currentChar == '.' || currentChar == '?' || currentChar == '!' || currentChar == ',')
@@ -225,7 +251,7 @@ public class DialogueTypewriter : MonoBehaviour
     private void FinishTypingImmediately()
     {
         if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
-        dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
+        narrativeText.maxVisibleCharacters = narrativeText.textInfo.characterCount;
         isTyping = false;
     }
 }
