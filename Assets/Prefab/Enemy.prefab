@@ -109,7 +109,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shooter
   volley: {fileID: 11400000, guid: 6e1c3a0b874dbf54192fa77389a34dbe, type: 2}
   bulletPrefab: {fileID: 6078564861303885090, guid: 4aa0fc21532c50542a9c634865bdb077, type: 3}
-  interval: 1
+  burstInterval: 0.5
+  burstCount: 3
+  breakInterval: 2
+  aimsPlayer: 0
+  turnSpeed: 0
 --- !u!60 &4506381974749235536
 PolygonCollider2D:
   m_ObjectHideFlags: 0
