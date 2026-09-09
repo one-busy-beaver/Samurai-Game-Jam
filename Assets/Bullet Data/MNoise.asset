@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: becc8d8d5708fb34ca8f3944ba0ba52d, type: 3}
   m_Name: MNoise
   m_EditorClassIdentifier: Assembly-CSharp::Noise
-  speed: 5
-  heading: {x: 0, y: 0}
+  speed: 4

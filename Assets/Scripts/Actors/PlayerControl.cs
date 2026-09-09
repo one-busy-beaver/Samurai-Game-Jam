@@ -78,10 +78,6 @@ public class PlayerControl : MonoBehaviour
         lastMoveDirection = new Vector2(0, 1);
         CurrentHealth = maxHealth;
 
-        if (heartManager != null)
-        {
-            heartManager.InitializeHearts(maxHealth);
-        }
         // Allow all enemies to know player's location
         Shooter.PlayerTarget = transform; 
     }

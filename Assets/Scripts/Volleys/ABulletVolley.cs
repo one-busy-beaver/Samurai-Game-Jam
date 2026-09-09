@@ -12,7 +12,6 @@ public struct BulletSpawnInfo
 public abstract class BulletVolley : ScriptableObject
 {   
     [SerializeField, Min(1)] protected int count;
-    [SerializeField] protected float spacing;
     [SerializeField] protected MotionMath motion;
     public abstract List<BulletSpawnInfo> Generate();
 }
