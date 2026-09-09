@@ -224,7 +224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.085510254}
+  m_AnchoredPosition: {x: 0, y: -0.08544922}
   m_SizeDelta: {x: -1219, y: -685.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &264652316
@@ -277,7 +277,6 @@ GameObject:
   - component: {fileID: 375210511}
   - component: {fileID: 375210510}
   - component: {fileID: 375210509}
-  - component: {fileID: 375210513}
   - component: {fileID: 375210514}
   - component: {fileID: 375210516}
   - component: {fileID: 375210515}
@@ -374,18 +373,6 @@ RectTransform:
   m_AnchoredPosition: {x: -7.9053, y: -4.4086}
   m_SizeDelta: {x: 1848.1, y: 1039.7549}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &375210513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 375210508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebdade4e7f8bc97429fe1f51e3c1ecd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueController
 --- !u!212 &375210514
 SpriteRenderer:
   serializedVersion: 2
