@@ -23,10 +23,10 @@ public class Spread : BulletVolley
             return list;
         }
 
-        spreadAngle = Math.Min(spreadAngle, 360 - spacing);
-
-        float inc = spreadAngle / (count - 1);
-        float min = - spreadAngle / 2;
+        bool isFullCircle = Mathf.Approximately(spreadAngle, 360f);
+        float inc = isFullCircle ? (360f / count) : (spreadAngle / (count - 1));
+        float min = isFullCircle ? 0f : (-spreadAngle * 0.5f);
+        
         for (int i = 0; i < count; i++)
         {
             float angle = min + inc * i;

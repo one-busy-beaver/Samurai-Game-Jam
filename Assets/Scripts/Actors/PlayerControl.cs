@@ -78,10 +78,16 @@ public class PlayerControl : MonoBehaviour
     // Health Manager
     [SerializeField] private HeartManager heartManager; // I added this
 
+    // Awake calls before start
+    void Awake()
+    {
+        // Allow all enemies to know player's location
+        // (moved here from Start() so it's set before any enemy's Start() runs)
+        Shooter.PlayerTarget = transform;
+    }
+
     void Start()
     {
-        mainCamera = Camera.main;
-
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         lastMoveDirection = new Vector2(0, 1);
@@ -91,21 +97,10 @@ public class PlayerControl : MonoBehaviour
         {
             heartManager.InitializeHearts(maxHealth);
         }
-
-        if (sr != null)
-        {
-            halfWidth = sr.bounds.extents.x;
-            halfHeight = sr.bounds.extents.y;
-        }
-
-        UpdateCameraBounds(); // keeps player in bounds
-        // Allow all enemies to know player's location
-        Shooter.PlayerTarget = transform; 
     }
 
     void Update()
     {
-        if (PauseController.IsGamePaused) return;
         ReadInput();
         UpdateSpriteDirection();
         HandleDash();
@@ -115,13 +110,6 @@ public class PlayerControl : MonoBehaviour
     {
         // keep Move() here to avoid jitter in monitors different from 50Hz
         Move();
-    }
-
-    // called after movement has processed
-    private void LateUpdate()
-    {
-        UpdateCameraBounds();
-        ClampPositionToCamera();
     }
 
     void ReadInput()
@@ -142,7 +130,7 @@ public class PlayerControl : MonoBehaviour
         if (keyboard.spaceKey.wasPressedThisFrame || keyboard.shiftKey.wasPressedThisFrame) {
             dashPressed = true;
         }
-        
+
     }
 
     /* MOVEMENTS */
@@ -170,7 +158,7 @@ public class PlayerControl : MonoBehaviour
         if (dashDir == Vector2.zero) dashDir = lastMoveDirection;
 
         // Increase velocity to dash mode
-        rb.linearVelocity = dashDir * dashSpeed; 
+        rb.linearVelocity = dashDir * dashSpeed;
 
         float timer = 0f;
         while (timer < dashTime)
@@ -201,9 +189,9 @@ public class PlayerControl : MonoBehaviour
         {
             heartManager.UpdateHearts(CurrentHealth);
         }
-    
+
         if (CurrentHealth == 0)
-        {   
+        {
             Debug.Log("you died");
 
             // switch to death screen
@@ -239,12 +227,12 @@ public class PlayerControl : MonoBehaviour
     IEnumerator RecoilRoutine(Vector2 direction)
     {
         isRecoiling = true;
-        
+
         float timer = 0;
         while (timer < recoilTime)
         {
             // Player can not control character's moving direction
-            rb.linearVelocity = direction * recoilSpeed; 
+            rb.linearVelocity = direction * recoilSpeed;
             timer += Time.deltaTime;
             yield return null;
         }
@@ -261,7 +249,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator InvincibleRoutine()
     {
         IsInvincible = true;
-        
+
         float timer = 0f;
         while (timer < invincibleTime)
         {

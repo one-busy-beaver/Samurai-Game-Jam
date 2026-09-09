@@ -224,7 +224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: -0.085510254}
+  m_AnchoredPosition: {x: 0, y: -0.085510254}
   m_SizeDelta: {x: -1219, y: -685.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &264652316
@@ -369,10 +369,10 @@ RectTransform:
   - {fileID: 802906818}
   m_Father: {fileID: 1262361799}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 405.5, y: 228.12503}
-  m_SizeDelta: {x: 800.00006, y: 450.06174}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.1400146, y: -0.6085968}
+  m_SizeDelta: {x: 797.76, y: 448.80188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &375210513
 MonoBehaviour:
@@ -896,9 +896,9 @@ RectTransform:
   - {fileID: 2120838404}
   m_Father: {fileID: 375210512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400.00003, y: 225.03087}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0.000030517578, y: 225.03087}
   m_SizeDelta: {x: 811, y: 456.25006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &802906819
@@ -1249,7 +1249,7 @@ Transform:
   m_GameObject: {fileID: 1008991878}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 231.10043, y: 54.801018, z: -4.6789}
+  m_LocalPosition: {x: -75, y: -29, z: -4.6789}
   m_LocalScale: {x: 0.46792138, y: 0.46792138, z: 0.46792138}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1525,8 +1525,8 @@ Transform:
   m_GameObject: {fileID: 1030688603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 231.10043, y: 54.801018, z: 0}
-  m_LocalScale: {x: 0.46792138, y: 0.46792138, z: 0.46792138}
+  m_LocalPosition: {x: 24.306458, y: -5.451416, z: 0}
+  m_LocalScale: {x: 0.6689872, y: 0.6689872, z: 0.6689872}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1716,7 +1716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1805,6 +1805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseController
   container: {fileID: 264652311}
+  optionsPanel: {fileID: 0}
 --- !u!114 &1431264479
 MonoBehaviour:
   m_ObjectHideFlags: 0
