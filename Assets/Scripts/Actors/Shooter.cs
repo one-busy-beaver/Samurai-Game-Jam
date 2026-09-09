@@ -10,34 +10,38 @@ public class Shooter : MonoBehaviour
      [Header("Bullet Settings")]
     [SerializeField] BulletVolley volley;
     [SerializeField] Bullet bulletPrefab;
+    [SerializeField] Vector2 spawnDisplacement;
 
     [Header("Interval Settings")]
-    [SerializeField] float burstInterval;
-    [SerializeField] int burstCount;
-    [SerializeField] float breakInterval;
+    [SerializeField] float burstInterval = 0.5f;
+    [SerializeField] int burstCount = 3;
+    [SerializeField] float breakInterval = 1f;
 
     [Header("Aiming Settings")]
-    [SerializeField] bool aimsPlayer;
-    [SerializeField] float turnSpeed;
+    [SerializeField] bool aimsPlayer = true;
+    [SerializeField] bool alwaysAimsPlayer;
+    [SerializeField] float turnSpeed = 60f;
 
     Vector2 facing = Vector2.right;
     bool isFiring;
-    
+    bool isBursting;
 
     void Update()
     {
         Walk();
-        if (aimsPlayer)
-            Aim();
+        if (alwaysAimsPlayer)
+            Aim(false);
+        else if (aimsPlayer)
+            Aim(isBursting);
         HandleFire();
     }
 
     // TODO: implement this
     void Walk(){}
-    void Aim()
+    void Aim(bool pauseCondition)
     {
         Vector2 direction = (Vector2)PlayerTarget.position - (Vector2)transform.position;
-        if (direction == Vector2.zero) return;
+        if (direction == Vector2.zero || pauseCondition) return;
 
         // Calculate angle in degrees
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -54,16 +58,18 @@ public class Shooter : MonoBehaviour
     IEnumerator FireRoutine()
     {
         isFiring = true;
+        isBursting = true;
         for (int i = 0; i < burstCount; i++)
         {
             Fire();
-            if (i < burstCount - 1) yield return new WaitForSeconds(burstInterval);
+            yield return new WaitForSeconds(burstInterval);
         }
+        isBursting = false;
         yield return new WaitForSeconds(breakInterval);
         isFiring = false;
     }
 
-    public void Fire()
+    void Fire()
     {
         List<BulletSpawnInfo> spawns = volley.Generate();
 
@@ -71,10 +77,15 @@ public class Shooter : MonoBehaviour
         {
             BulletSpawnInfo info = spawns[i];
 
+            // Position and rotation information from BulletVolley
             Vector2 worldPos = (Vector2)transform.position + (Vector2)(transform.rotation * info.relativePosition);
             Quaternion bulletRot = transform.rotation * Quaternion.Euler(0, 0, info.angle);
 
-            Bullet bullet = Instantiate(bulletPrefab, worldPos, bulletRot);
+            // Custom positional adjustment
+            Vector2 displacementOffset = (Vector2)(bulletRot * Vector3.right) * spawnDisplacement;
+            Vector2 finalPos = worldPos + displacementOffset;
+
+            Bullet bullet = Instantiate(bulletPrefab, finalPos, bulletRot);
             bullet.Motion = info.motion;
             bullet.Heading = (Vector2)(bulletRot * facing);
         }

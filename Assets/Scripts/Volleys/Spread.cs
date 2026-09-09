@@ -23,9 +23,8 @@ public class Spread : BulletVolley
             return list;
         }
 
-        spreadAngle = Math.Min(spreadAngle, 360 - spacing);
-
         float inc = spreadAngle / (count - 1);
+        spreadAngle = Math.Min(spreadAngle, 360 - inc); // avoid uneven spacing
         float min = - spreadAngle / 2;
         for (int i = 0; i < count; i++)
         {

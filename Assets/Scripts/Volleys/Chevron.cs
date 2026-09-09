@@ -4,9 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Volley/Chevron")]
 public class Chevron : BulletVolley
 {
+    [SerializeField] float bulletSpacing;
+    [SerializeField] float distanceFromShooter;
     [SerializeField] float chevronDepth; // Positive for '>', Negative for '<'
     [SerializeField] float spreadAngle;
-    [SerializeField] float displacement;
 
 
     public override List<BulletSpawnInfo> Generate()
@@ -16,7 +17,7 @@ public class Chevron : BulletVolley
         {
             list.Add(new BulletSpawnInfo
             {
-                relativePosition = new Vector2(displacement, 0f),
+                relativePosition = new Vector2(distanceFromShooter, 0f),
                 angle = 0f,
                 motion = motion
             });
@@ -27,8 +28,8 @@ public class Chevron : BulletVolley
         for (int i = 0; i < count; i++)
         {
             int rank = i - half; // Distance from center: e.g. -2, -1, 0, 1, 2
-            float y = rank * spacing;
-            float x = displacement - Mathf.Abs(rank) * chevronDepth; // Creates the V shape
+            float y = rank * bulletSpacing;
+            float x = distanceFromShooter - Mathf.Abs(rank) * chevronDepth; // Creates the V shape
 
             float angle = rank / (float)half * (spreadAngle * 0.5f);
 
