@@ -71,6 +71,14 @@ public class PlayerControl : MonoBehaviour
     // Health Manager
     [SerializeField] private HeartManager heartManager; // I added this
 
+    // Awake calls before start
+    void Awake()
+    {
+        // Allow all enemies to know player's location
+        // (moved here from Start() so it's set before any enemy's Start() runs)
+        Shooter.PlayerTarget = transform;
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -78,8 +86,10 @@ public class PlayerControl : MonoBehaviour
         lastMoveDirection = new Vector2(0, 1);
         CurrentHealth = maxHealth;
 
-        // Allow all enemies to know player's location
-        Shooter.PlayerTarget = transform; 
+        if (heartManager != null)
+        {
+            heartManager.InitializeHearts(maxHealth);
+        }
     }
 
     void Update()
@@ -113,7 +123,7 @@ public class PlayerControl : MonoBehaviour
         if (keyboard.spaceKey.wasPressedThisFrame || keyboard.shiftKey.wasPressedThisFrame) {
             dashPressed = true;
         }
-        
+
     }
 
     /* MOVEMENTS */
@@ -141,7 +151,7 @@ public class PlayerControl : MonoBehaviour
         if (dashDir == Vector2.zero) dashDir = lastMoveDirection;
 
         // Increase velocity to dash mode
-        rb.linearVelocity = dashDir * dashSpeed; 
+        rb.linearVelocity = dashDir * dashSpeed;
 
         float timer = 0f;
         while (timer < dashTime)
@@ -172,9 +182,9 @@ public class PlayerControl : MonoBehaviour
         {
             heartManager.UpdateHearts(CurrentHealth);
         }
-    
+
         if (CurrentHealth == 0)
-        {   
+        {
             Debug.Log("you died");
 
             // switch to death screen
@@ -210,12 +220,12 @@ public class PlayerControl : MonoBehaviour
     IEnumerator RecoilRoutine(Vector2 direction)
     {
         isRecoiling = true;
-        
+
         float timer = 0;
         while (timer < recoilTime)
         {
             // Player can not control character's moving direction
-            rb.linearVelocity = direction * recoilSpeed; 
+            rb.linearVelocity = direction * recoilSpeed;
             timer += Time.deltaTime;
             yield return null;
         }
@@ -232,7 +242,7 @@ public class PlayerControl : MonoBehaviour
     IEnumerator InvincibleRoutine()
     {
         IsInvincible = true;
-        
+
         float timer = 0f;
         while (timer < invincibleTime)
         {
