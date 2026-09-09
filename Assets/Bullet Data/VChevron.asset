@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0ac4184c7244dc4394d0ef793ad6814, type: 3}
   m_Name: VChevron
   m_EditorClassIdentifier: Assembly-CSharp::Chevron
-  count: 0
-  spacing: 0
-  motion: {fileID: 0}
-  rowSpacing: 0
-  depthOffset: 0
-  spreadAngle: 0
+  count: 5
+  spacing: 1
+  motion: {fileID: 11400000, guid: 07664ef427101924c8e72f93bf4971e9, type: 2}
+  chevronDepth: 2
+  spreadAngle: 50
+  displacement: 5

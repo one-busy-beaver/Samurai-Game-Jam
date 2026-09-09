@@ -82,6 +82,8 @@ public class PlayerControl : MonoBehaviour
         {
             heartManager.InitializeHearts(maxHealth);
         }
+        // Allow all enemies to know player's location
+        Shooter.PlayerTarget = transform; 
     }
 
     void Update()
@@ -120,22 +122,20 @@ public class PlayerControl : MonoBehaviour
 
     /* MOVEMENTS */
 
-    // Control player's basic movement
     void Move()
     {
+        // We always want a non-zero dash direction
         if (moveInput.magnitude != 0) lastMoveDirection = moveInput;
         if (isDashing) return;
         rb.linearVelocity = new Vector2(moveSpeed * moveInput.x, moveSpeed * moveInput.y);
     }
 
-    // Control player's dash ability
     void HandleDash()
     {
         if (dashPressed && canDash && !isDashing)
             StartCoroutine(DashRoutine());
     }
 
-    // The heavy lifting part of dash
     IEnumerator DashRoutine()
     {
         isDashing = true;
