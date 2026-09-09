@@ -1,0 +1,231 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using TMPro;
+using Ink.Runtime;
+
+public class DialogueTypewriter : MonoBehaviour
+{
+    [Header("UI References")]
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private UIFader fader;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+
+    [Header("Typewriter Timing")]
+    [SerializeField] private float charactersPerSecond = 35f;
+    [SerializeField] private float punctuationPause = 0.2f;
+    [SerializeField] private float fadeDuration = 0.5f;
+
+    [Header("Color Palette Dictionary")]
+    [SerializeField] private List<ColorMapping> colorPalette = new List<ColorMapping>
+    {
+        new ColorMapping("white",  new Color32(255, 255, 255, 255)),
+        new ColorMapping("red",    new Color32(235, 64, 52, 255)),
+        new ColorMapping("yellow", new Color32(255, 242, 121, 255)),
+        new ColorMapping("cyan",   new Color32(80, 220, 255, 255)),
+        new ColorMapping("gold",   new Color32(255, 195, 0, 255))
+    };
+
+    [System.Serializable]
+    public struct ColorMapping
+    {
+        public string key;
+        public Color32 color;
+        public ColorMapping(string key, Color32 color)
+        {
+            this.key = key;
+            this.color = color;
+        }
+    }
+
+    private Story currentStory;
+    private Coroutine typewriterRoutine;
+    private bool isTyping = false;
+    private bool isEnding = false;
+    private Color32 activeTextColor = Color.white;
+    private Action onCompleteCallback;
+
+    private void Awake()
+    {
+        // Start completely hidden and unclickable
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+        }
+    }
+
+    /// <summary>
+    /// Call this from any script to play a narrative file
+    /// </summary>
+    public void PlayNarrative(TextAsset inkAsset, Action onComplete = null)
+    {
+        if (inkAsset == null) return;
+
+        onCompleteCallback = onComplete;
+        currentStory = new Story(inkAsset.text);
+        isEnding = false;
+
+        if (canvasGroup != null)
+        {
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.interactable = true;
+        }
+
+        if (fader != null)
+        {
+            fader.FadeIn(fadeDuration);
+        }
+        else if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 1f;
+        }
+
+        ContinueStory();
+    }
+
+    private void Update()
+    {
+        if (currentStory == null || isEnding) return;
+
+        bool interactPressed = (Keyboard.current != null && (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.enterKey.wasPressedThisFrame))
+                               || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame);
+
+        if (interactPressed)
+        {
+            if (isTyping)
+            {
+                FinishTypingImmediately();
+            }
+            else
+            {
+                ContinueStory();
+            }
+        }
+    }
+
+    private void ContinueStory()
+    {
+        if (currentStory.canContinue)
+        {
+            string line = currentStory.Continue().Trim();
+            List<string> tags = currentStory.currentTags;
+
+            string speaker = ParseTagValue(tags, "speaker");
+            if (nameText != null) nameText.text = speaker;
+
+            ResolveColor(tags);
+
+            if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
+            typewriterRoutine = StartCoroutine(TypewriterSequence(line, activeTextColor));
+        }
+        else
+        {
+            StartCoroutine(EndNarrativeRoutine());
+        }
+    }
+
+    private IEnumerator EndNarrativeRoutine()
+    {
+        isEnding = true;
+
+        if (fader != null)
+        {
+            fader.FadeOut(fadeDuration);
+            yield return new WaitForSecondsRealtime(fadeDuration);
+        }
+
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+        }
+
+        currentStory = null;
+        onCompleteCallback?.Invoke();
+    }
+
+    private void ResolveColor(List<string> tags)
+    {
+        string colorTag = ParseTagValue(tags, "color");
+        if (!string.IsNullOrEmpty(colorTag))
+        {
+            activeTextColor = GetColorFromKey(colorTag);
+            return;
+        }
+
+        if (currentStory.variablesState["text_color"] != null)
+        {
+            string inkVarColor = currentStory.variablesState["text_color"].ToString();
+            activeTextColor = GetColorFromKey(inkVarColor);
+            return;
+        }
+
+        activeTextColor = GetColorFromKey("white");
+    }
+
+    private Color32 GetColorFromKey(string key)
+    {
+        key = key.Trim().ToLower();
+        for (int i = 0; i < colorPalette.Count; i++)
+        {
+            if (colorPalette[i].key.ToLower() == key)
+                return colorPalette[i].color;
+        }
+
+        if (ColorUtility.TryParseHtmlString(key.StartsWith("#") ? key : "#" + key, out Color parsedColor))
+            return parsedColor;
+
+        return Color.white;
+    }
+
+    private string ParseTagValue(List<string> tags, string prefix)
+    {
+        for (int i = 0; i < tags.Count; i++)
+        {
+            string t = tags[i].Trim();
+            if (t.StartsWith(prefix + ":", StringComparison.OrdinalIgnoreCase))
+                return t.Substring(prefix.Length + 1).Trim();
+        }
+        return "";
+    }
+
+    private IEnumerator TypewriterSequence(string rawText, Color32 color)
+    {
+        isTyping = true;
+        string hexColor = ColorUtility.ToHtmlStringRGBA(color);
+        dialogueText.text = $"<color=#{hexColor}>{rawText}</color>";
+
+        dialogueText.maxVisibleCharacters = 0;
+        dialogueText.ForceMeshUpdate();
+
+        TMP_TextInfo textInfo = dialogueText.textInfo;
+        int totalCharacters = textInfo.characterCount;
+        float charDelay = 1f / Mathf.Max(1f, charactersPerSecond);
+
+        for (int visibleCount = 1; visibleCount <= totalCharacters; visibleCount++)
+        {
+            dialogueText.maxVisibleCharacters = visibleCount;
+            char currentChar = textInfo.characterInfo[visibleCount - 1].character;
+
+            if (currentChar == '.' || currentChar == '?' || currentChar == '!' || currentChar == ',')
+                yield return new WaitForSeconds(punctuationPause);
+            else
+                yield return new WaitForSeconds(charDelay);
+        }
+
+        isTyping = false;
+    }
+
+    private void FinishTypingImmediately()
+    {
+        if (typewriterRoutine != null) StopCoroutine(typewriterRoutine);
+        dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
+        isTyping = false;
+    }
+}
