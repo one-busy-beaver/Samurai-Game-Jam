@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioMixer mainMixer;
     [SerializeField] private Slider musicSlider;
-    [SerializeField] private AudioSource musicSource;
 
     private const string MUSIC_VOL_PARAM = "MusicVol";
     private const string MUSIC_PREF_KEY = "SavedMusicVolume";

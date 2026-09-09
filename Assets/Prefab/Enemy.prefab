@@ -79,12 +79,12 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 209962395
-  m_SortingLayer: 4
+  m_SortingLayerID: 2141820095
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: b6f6242c573a3084bba36c77254a8afa, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.04851675, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -107,19 +107,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shooter
   volley: {fileID: 11400000, guid: a6da0cb45de10054cb20b0bf8e12e35b, type: 2}
   bulletPrefab: {fileID: 6078564861303885090, guid: 4aa0fc21532c50542a9c634865bdb077, type: 3}
-  spawnDisplacement: 0
+  firePoint: {fileID: 0}
   burstInterval: 0.3
   burstCount: 10
   breakInterval: 0
-  maxBreakCount: 3
   aimsPlayer: 1
-  alwaysAimsPlayer: 0
   turnSpeed: 60
-  canWalk: 1
-  walkSpeed: 5
-  startPos: {x: -16, y: 7}
-  stopDistance: 4
-  stopThreshold: 0.05
 --- !u!61 &5301782003471989055
 BoxCollider2D:
   m_ObjectHideFlags: 0
