@@ -48,6 +48,13 @@ public class PlayerControl : MonoBehaviour
     public bool IsInvincible { get; private set; }
     public int CurrentHealth { get; private set; }
 
+    // Vars to keep player in-bounds
+    private Camera mainCamera;
+    private float halfWidth;
+    private float halfHeight;
+    private Vector2 minBounds;
+    private Vector2 maxBounds;
+
     // updating sprite direction
     void UpdateSpriteDirection()
     {
@@ -73,6 +80,8 @@ public class PlayerControl : MonoBehaviour
 
     void Start()
     {
+        mainCamera = Camera.main;
+
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         lastMoveDirection = new Vector2(0, 1);
@@ -82,12 +91,21 @@ public class PlayerControl : MonoBehaviour
         {
             heartManager.InitializeHearts(maxHealth);
         }
+
+        if (sr != null)
+        {
+            halfWidth = sr.bounds.extents.x;
+            halfHeight = sr.bounds.extents.y;
+        }
+
+        UpdateCameraBounds(); // keeps player in bounds
         // Allow all enemies to know player's location
         Shooter.PlayerTarget = transform; 
     }
 
     void Update()
     {
+        if (PauseController.IsGamePaused) return;
         ReadInput();
         UpdateSpriteDirection();
         HandleDash();
@@ -97,6 +115,13 @@ public class PlayerControl : MonoBehaviour
     {
         // keep Move() here to avoid jitter in monitors different from 50Hz
         Move();
+    }
+
+    // called after movement has processed
+    private void LateUpdate()
+    {
+        UpdateCameraBounds();
+        ClampPositionToCamera();
     }
 
     void ReadInput()
@@ -253,5 +278,26 @@ public class PlayerControl : MonoBehaviour
         // reset cleanly back to full whtie
         sr.color = normalColor;
         IsInvincible = false;
+    }
+
+    private void UpdateCameraBounds()
+    {
+        if (mainCamera == null) return;
+
+        Vector3 bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0f, 0f, 0f));
+        Vector3 topRight = mainCamera.ViewportToWorldPoint(new Vector3(1f, 1f, 0f));
+
+        minBounds = new Vector2(bottomLeft.x + halfWidth, bottomLeft.y + halfHeight);
+        maxBounds = new Vector2(topRight.x - halfWidth, topRight.y - halfHeight);
+    }
+
+    private void ClampPositionToCamera()
+    {
+        Vector3 pos = transform.position;
+
+        pos.x = Mathf.Clamp(pos.x, minBounds.x, maxBounds.x);
+        pos.y = Mathf.Clamp(pos.y, minBounds.y, maxBounds.y);
+
+        transform.position = pos;
     }
 }

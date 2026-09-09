@@ -10,6 +10,7 @@ public class Shooter : MonoBehaviour
      [Header("Bullet Settings")]
     [SerializeField] BulletVolley volley;
     [SerializeField] Bullet bulletPrefab;
+    [SerializeField] private Transform firePoint; // bullet spawn point
 
     [Header("Interval Settings")]
     [SerializeField] float burstInterval;
@@ -26,6 +27,7 @@ public class Shooter : MonoBehaviour
 
     void Update()
     {
+        if (PauseController.IsGamePaused) return;
         Walk();
         if (aimsPlayer)
             Aim();
@@ -65,18 +67,24 @@ public class Shooter : MonoBehaviour
 
     public void Fire()
     {
+        if (bulletPrefab == null || volley == null) return;
+
+        // fallback if firePoint wasn't assigned
+        Vector3 basePos = firePoint != null ? firePoint.position : transform.position;
+        Quaternion baseRot = firePoint != null ? firePoint.rotation : transform.rotation;
+
         List<BulletSpawnInfo> spawns = volley.Generate();
 
         for (int i = 0; i < spawns.Count; i++)
         {
             BulletSpawnInfo info = spawns[i];
 
-            Vector2 worldPos = (Vector2)transform.position + (Vector2)(transform.rotation * info.relativePosition);
-            Quaternion bulletRot = transform.rotation * Quaternion.Euler(0, 0, info.angle);
+            Vector2 worldPos = (Vector2)basePos + (Vector2)(baseRot * info.relativePosition);
+            Quaternion bulletRot = baseRot * Quaternion.Euler(0, 0, info.angle);
 
             Bullet bullet = Instantiate(bulletPrefab, worldPos, bulletRot);
             bullet.Motion = info.motion;
-            bullet.Heading = (Vector2)(bulletRot * facing);
+            bullet.Heading = -transform.right;
         }
     }
 }

@@ -41,14 +41,6 @@ public class DeathScreenController : MonoBehaviour
         }
     }
 
-    public void OnPlayerDefeated()
-    {
-        if (deathPanelFader != null)
-        {
-            deathPanelFader.FadeIn(2f);
-        }
-    }
-
     private IEnumerator ShowPrompt()
     {
         yield return new WaitForSecondsRealtime(promptDelay);
@@ -88,6 +80,14 @@ public class DeathScreenController : MonoBehaviour
         {
             Time.timeScale = 1; // lol, I forgot this last time
             SceneManager.LoadScene(targetSceneName);
+        }
+    }
+
+    public void OnPlayerDefeated()
+    {
+        if (deathPanelFader != null)
+        {
+            deathPanelFader.FadeIn(2f);
         }
     }
 }

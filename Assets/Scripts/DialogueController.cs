@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private UIFader boxFader; // Reference to the UIFader on text_box
 
     [Header("Optional Scene Transition")]
     [SerializeField] private string nextSceneOnComplete = "";
@@ -20,6 +22,7 @@ public class DialogueController : MonoBehaviour
 
     private Story currentStory;
     private bool isStoryActive = false;
+    private bool isEnding = false; // Prevents spamming clicks during the fade out
 
     private void Start()
     {
@@ -33,20 +36,29 @@ public class DialogueController : MonoBehaviour
     {
         currentStory = new Story(inkJSONAsset.text);
         isStoryActive = true;
+        isEnding = false;
 
         if (dialoguePanel != null)
             dialoguePanel.SetActive(true);
+
+        // Ensure dialogue box is visible and interactable at start
+        if (boxFader != null)
+            boxFader.FadeIn(0.2f);
 
         AdvanceDialogue();
     }
 
     private void Update()
     {
-        if (!isStoryActive) return;
+        if (PauseController.IsGamePaused) return;
+        if (!isStoryActive || isEnding) return;
 
-        // Advance line when space, enter, or mouse click is tapped
-        if ((Keyboard.current != null && (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.enterKey.wasPressedThisFrame))
-            || (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame))
+        bool keyPressed = Keyboard.current != null && 
+            (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.enterKey.wasPressedThisFrame);
+            
+        bool mouseClicked = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
+
+        if (keyPressed || mouseClicked)
         {
             AdvanceDialogue();
         }
@@ -56,19 +68,15 @@ public class DialogueController : MonoBehaviour
     {
         if (currentStory.canContinue)
         {
-            // 1. Fetch the raw dialogue line
             string nextLine = currentStory.Continue().Trim();
-
-            // 2. Extract the speaker from Ink tags
             string speakerName = ParseSpeakerTag(currentStory.currentTags);
 
-            // 3. Update the UI
             nameText.text = speakerName;
             dialogueText.text = nextLine;
         }
         else
         {
-            EndStory();
+            StartCoroutine(EndStoryRoutine());
         }
     }
 
@@ -76,24 +84,31 @@ public class DialogueController : MonoBehaviour
     {
         foreach (string tag in currentTags)
         {
-            // Expecting tags written as: #speaker: Name
             if (tag.StartsWith("speaker:"))
             {
                 return tag.Substring("speaker:".Length).Trim();
             }
         }
-
-        return ""; // Leave name blank if no speaker tag was added
+        return "";
     }
 
-    private void EndStory()
+    private IEnumerator EndStoryRoutine()
     {
+        isEnding = true;
         isStoryActive = false;
 
+        // 1. Fade out the dialogue box using UIFader
+        if (boxFader != null)
+        {
+            boxFader.FadeOut(fadeDuration);
+            yield return new WaitForSecondsRealtime(fadeDuration);
+        }
+
+        // 2. Hide the panel cleanly
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 
-        // Transition out if a target scene is defined
+        // 3. Trigger scene transition if one is set
         if (!string.IsNullOrEmpty(nextSceneOnComplete))
         {
             if (SceneFader.Instance != null)
@@ -102,6 +117,7 @@ public class DialogueController : MonoBehaviour
             }
             else
             {
+                Time.timeScale = 1f;
                 UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneOnComplete);
             }
         }
