@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -452,7 +452,7 @@ MonoBehaviour:
   dashCooldown: 0.3
   recoilTime: 0.15
   recoilSpeed: 20
-  maxHealth: 5
+  maxHealth: 10
   invincibleTime: 1.5
   flashMultiplier: 4
 --- !u!50 &1096100447

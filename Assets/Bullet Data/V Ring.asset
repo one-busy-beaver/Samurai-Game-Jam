@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spread
   count: 10
   motion: {fileID: 11400000, guid: 07664ef427101924c8e72f93bf4971e9, type: 2}
-  spreadAngle: 320
+  spreadAngle: 360
   radius: 2

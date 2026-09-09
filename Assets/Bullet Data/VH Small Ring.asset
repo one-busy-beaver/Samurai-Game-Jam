@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d04466e588df2e4383cb4ccde17d48b, type: 3}
   m_Name: VH Small Ring
   m_EditorClassIdentifier: Assembly-CSharp::Spread
-  count: 4
+  count: 5
   motion: {fileID: 11400000, guid: 07664ef427101924c8e72f93bf4971e9, type: 2}
-  spreadAngle: 180
+  spreadAngle: 360
   radius: 2
