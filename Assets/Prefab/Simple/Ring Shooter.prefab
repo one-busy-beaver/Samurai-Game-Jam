@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &750285847044641974
+--- !u!1001 &1274625517448052165
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -51,14 +51,18 @@ PrefabInstance:
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: volley
       value: 
-      objectReference: {fileID: 11400000, guid: 81f8750ddc48549409910e11a9295421, type: 2}
+      objectReference: {fileID: 11400000, guid: 85d2ec2ac4984514e8abd55e9f45f4bb, type: 2}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
-      propertyPath: aimsPlayer
-      value: 1
+      propertyPath: canWalk
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
-      propertyPath: burstCount
+      propertyPath: walkSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: aimsPlayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: breakInterval
@@ -74,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5548025735178174754, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_Name
-      value: Machinegun Shooter Variant
+      value: Ring Shooter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

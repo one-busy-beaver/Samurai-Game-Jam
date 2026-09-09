@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1274625517448052165
+--- !u!1001 &6549574041127203444
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -51,26 +51,18 @@ PrefabInstance:
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: volley
       value: 
-      objectReference: {fileID: 11400000, guid: 85d2ec2ac4984514e8abd55e9f45f4bb, type: 2}
+      objectReference: {fileID: 11400000, guid: 44b5231b847cb3f4f88dfaac0bc8dc17, type: 2}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
-      propertyPath: aimsPlayer
-      value: 0
+      propertyPath: burstCount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: breakInterval
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
-      propertyPath: burstInterval
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
-      propertyPath: alwaysAimsPlayer
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5548025735178174754, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_Name
-      value: Ring Shooter Variant
+      value: Diamond Shooter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

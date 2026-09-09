@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7058440851427110521
+--- !u!1001 &750285847044641974
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3850894207614242028, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00819
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3850894207614242028, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.28919
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3850894207614242028, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -51,10 +51,18 @@ PrefabInstance:
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: volley
       value: 
-      objectReference: {fileID: 11400000, guid: ac2fa2c5750e2534e8311d6d7de7346b, type: 2}
+      objectReference: {fileID: 11400000, guid: 81f8750ddc48549409910e11a9295421, type: 2}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: canWalk
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: aimsPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: burstCount
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: breakInterval
@@ -70,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5548025735178174754, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_Name
-      value: Chevron Shooter Variant
+      value: Machinegun Shooter Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

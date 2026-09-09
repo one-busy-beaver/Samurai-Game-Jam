@@ -37,15 +37,19 @@ public class PlayerControl : MonoBehaviour
     public bool IsInvincible { get; private set; }
     public int CurrentHealth { get; private set; }
 
+    // Awake calls before start
+    void Awake()
+    {
+        // Allow all enemies to know player's location
+        Shooter.PlayerTarget = transform;
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         lastMoveDirection = new Vector2(0, 1);
         CurrentHealth = maxHealth;
-
-        // Allow all enemies to know player's location
-        Shooter.PlayerTarget = transform; 
     }
 
     void Update()

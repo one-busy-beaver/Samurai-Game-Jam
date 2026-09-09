@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4058533248276005893}
   - component: {fileID: 4695304293922415877}
   - component: {fileID: 5301782003471989055}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,13 +107,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shooter
   volley: {fileID: 11400000, guid: a6da0cb45de10054cb20b0bf8e12e35b, type: 2}
   bulletPrefab: {fileID: 6078564861303885090, guid: 4aa0fc21532c50542a9c634865bdb077, type: 3}
-  spawnDisplacement: {x: 0, y: 0}
+  spawnDisplacement: 0
   burstInterval: 0.3
   burstCount: 10
   breakInterval: 0
+  maxBreakCount: 3
   aimsPlayer: 1
   alwaysAimsPlayer: 0
   turnSpeed: 60
+  canWalk: 1
+  walkSpeed: 5
+  startPos: {x: -16, y: 7}
+  stopDistance: 4
+  stopThreshold: 0.05
 --- !u!61 &5301782003471989055
 BoxCollider2D:
   m_ObjectHideFlags: 0

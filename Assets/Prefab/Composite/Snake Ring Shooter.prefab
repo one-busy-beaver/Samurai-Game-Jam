@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &9180029670791402580
+--- !u!1001 &8505104267848379603
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3850894207614242028, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.12409
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3850894207614242028, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.43928
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3850894207614242028, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -51,14 +51,18 @@ PrefabInstance:
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: volley
       value: 
-      objectReference: {fileID: 11400000, guid: c7af598a5081103409729f3cb5f6b3b5, type: 2}
+      objectReference: {fileID: 11400000, guid: 7c0e121841ac78d4dbc882066b4668b0, type: 2}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: aimsPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: breakInterval
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5548025735178174754, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: m_Name
-      value: Sine Shooter Variant
+      value: Snake Ring Shooter
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
