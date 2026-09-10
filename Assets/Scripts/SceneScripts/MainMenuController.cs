@@ -8,16 +8,23 @@ public class MainMenuController : MonoBehaviour
     // MUST be public so the button can find it
     [SerializeField] private string gameplaySceneName = "SampleScene";
     [SerializeField] private float transitionDuration = 1f;
+    [SerializeField] private DialogueTypewriter narrativeScreen;
+    [SerializeField] private TextAsset introductionLore;
 
     public void OnStartClick()
     {
-        if (SceneFader.Instance != null)
+        if (narrativeScreen != null && introductionLore != null)
         {
-            SceneFader.Instance.FadeAndLoad(gameplaySceneName, transitionDuration);
+            narrativeScreen.PlayNarrative(introductionLore, () => 
+            {
+                Debug.Log("Intro done!!");
+                LoadGameplayScene();
+            });
         }
         else
         {
-            SceneManager.LoadScene(gameplaySceneName);
+            // fallback if none of the above are assigned
+            LoadGameplayScene();
         }
     }
     public void OnExitClick()
@@ -43,5 +50,17 @@ public class MainMenuController : MonoBehaviour
     {
         // names of everyone!!!
         
+    }
+
+    private void LoadGameplayScene()
+    {
+        if (SceneFader.Instance != null)
+        {
+            SceneFader.Instance.FadeAndLoad(gameplaySceneName, transitionDuration);
+        }
+        else
+        {
+            SceneManager.LoadScene(gameplaySceneName);
+        }
     }
 }

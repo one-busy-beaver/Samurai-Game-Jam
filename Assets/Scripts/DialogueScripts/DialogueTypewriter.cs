@@ -67,13 +67,11 @@ public class DialogueTypewriter : MonoBehaviour
     {
         if (playOnStart && inkJSONAsset != null)
         {
+            Debug.Log("NARRATIVE PLAYING");
             PlayNarrative(inkJSONAsset);
         }
     }
 
-    /// <summary>
-    /// Play with a custom asset or an optional callback when finished
-    /// </summary>
     public void PlayNarrative(TextAsset storyAsset = null, Action onComplete = null)
     {
         TextAsset assetToLoad = storyAsset != null ? storyAsset : inkJSONAsset;
@@ -82,6 +80,8 @@ public class DialogueTypewriter : MonoBehaviour
             Debug.LogWarning("No Ink JSON Asset assigned to DialogueTypewriter!");
             return;
         }
+
+        gameObject.SetActive(true); // turns on canvas group
 
         onCompleteCallback = onComplete;
         currentStory = new Story(assetToLoad.text);
@@ -163,6 +163,7 @@ public class DialogueTypewriter : MonoBehaviour
         }
 
         currentStory = null;
+        gameObject.SetActive(false);
         onCompleteCallback?.Invoke();
     }
 
