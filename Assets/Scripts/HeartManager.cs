@@ -14,12 +14,8 @@ public class HeartManager : MonoBehaviour
 
     private List<Image> heartImages = new List<Image>(); // containes hearts displayed on screen
 
-    void Start()
-    {
-        InitializeHearts(5); // test spawn
-    }
     // call once at game start with the player's max health (which is 5)
-    public void InitializeHearts(int maxHealth)
+    public void InitializeHearts(int maxHealth) // called in PlayerControls
     {
         foreach (Transform child in heartContainer)
         {

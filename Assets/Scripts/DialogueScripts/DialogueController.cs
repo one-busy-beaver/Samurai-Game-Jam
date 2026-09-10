@@ -25,6 +25,9 @@ public class DialogueController : MonoBehaviour
         [HideInInspector] public Coroutine hopRoutine;
     }
 
+    [Header("Disable PlayerControl")]
+    [SerializeField] private PlayerControl playerControl;
+
     [Header("Ink File")]
     [SerializeField] private TextAsset inkJSONAsset;
 
@@ -76,6 +79,11 @@ public class DialogueController : MonoBehaviour
 
     public void StartStory()
     {
+
+        if (playerControl != null)
+        {
+            playerControl.enabled = false;
+        }
         currentStory = new Story(inkJSONAsset.text);
         isStoryActive = true;
         isEnding = false;
@@ -316,6 +324,11 @@ public class DialogueController : MonoBehaviour
         if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
         {
             Time.timeScale = 1f;
+        }
+
+        if (playerControl != null)
+        {
+            playerControl.enabled = true;
         }
 
         if (!string.IsNullOrEmpty(nextSceneOnComplete))

@@ -73,8 +73,20 @@ PrefabInstance:
       value: 0.79272914
       objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: turnSpeed
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: walkSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: breakInterval
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
+      propertyPath: burstInterval
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4695304293922415877, guid: 84e468577b09a1546b67d932de32a8a8, type: 3}
       propertyPath: alwaysAimsPlayer

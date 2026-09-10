@@ -232,16 +232,16 @@ MonoBehaviour:
   volley: {fileID: 11400000, guid: a6da0cb45de10054cb20b0bf8e12e35b, type: 2}
   bulletPrefab: {fileID: 6078564861303885090, guid: 4aa0fc21532c50542a9c634865bdb077, type: 3}
   spawnDisplacement: 0
-  burstInterval: 0.3
+  burstInterval: 0.2
   burstCount: 10
   breakInterval: 0
   maxBreakCount: 5
   aimsPlayer: 1
   alwaysAimsPlayer: 0
-  turnSpeed: 60
+  turnSpeed: 65
   spriteFacesLeftByDefault: 1
   canWalk: 0
-  walkSpeed: 5
+  walkSpeed: 7
   startPos: {x: 0, y: 0}
   stopDistance: 4
   stopThreshold: 0.05
