@@ -195,7 +195,7 @@ public class PlayerControl : MonoBehaviour
             Debug.Log("you died");
 
             // switch to death screen
-            SceneManager.LoadScene("DeathScene");
+            SceneManager.LoadScene("PreDeathScene");
 
             return;
 

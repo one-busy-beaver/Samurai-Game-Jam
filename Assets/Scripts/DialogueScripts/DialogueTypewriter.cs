@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using TMPro;
 using Ink.Runtime;
 
@@ -22,6 +23,11 @@ public class DialogueTypewriter : MonoBehaviour
     [SerializeField] private float charactersPerSecond = 35f;
     [SerializeField] private float punctuationPause = 0.2f;
     [SerializeField] private float fadeDuration = 0.5f;
+
+    [Header("Optional Scene Transition")]
+    [Tooltip("Leave blank if this typewriter doesn't change scenes on complete")]
+    [SerializeField] private string nextSceneOnComplete = "";
+    // [SerializeField] private float sceneFadeDuration = 1f; // console complains that this is never used
 
     [Header("Color Palette Dictionary")]
     [SerializeField] private List<ColorMapping> colorPalette = new List<ColorMapping>
@@ -149,22 +155,47 @@ public class DialogueTypewriter : MonoBehaviour
     {
         isEnding = true;
 
-        if (fader != null)
-        {
-            fader.FadeOut(fadeDuration);
-            yield return new WaitForSecondsRealtime(fadeDuration);
-        }
+        // If we are changing scenes (via field or callback), keep screen black!
+        bool isTransitioning = !string.IsNullOrEmpty(nextSceneOnComplete) || onCompleteCallback != null;
 
-        if (canvasGroup != null)
+        if (!isTransitioning)
         {
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            canvasGroup.interactable = false;
+            if (fader != null)
+            {
+                fader.FadeOut(fadeDuration);
+                yield return new WaitForSecondsRealtime(fadeDuration);
+            }
+
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = 0f;
+                canvasGroup.blocksRaycasts = false;
+                canvasGroup.interactable = false;
+            }
+
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            if (narrativeText != null) narrativeText.text = "";
         }
 
         currentStory = null;
-        gameObject.SetActive(false);
         onCompleteCallback?.Invoke();
+
+        // Load scene if specified in the Inspector
+        if (!string.IsNullOrEmpty(nextSceneOnComplete))
+        {
+            Time.timeScale = 1f; // Safety reset in case time was paused
+            if (SceneFader.Instance != null)
+            {
+                SceneFader.Instance.FadeAndLoad(nextSceneOnComplete, 0.5f);
+            }
+            else
+            {
+                SceneManager.LoadScene(nextSceneOnComplete);
+            }
+        }
     }
 
     private void ResolveColor(List<string> tags)

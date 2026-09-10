@@ -2605,6 +2605,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800310506}
   m_CullTransparentMesh: 1
+--- !u!114 &820760237 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 926392233379648596, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+  m_PrefabInstance: {fileID: 2128011775}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!4 &859583073 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4035902316250016143, guid: a3d57cbcdf1de614f8f2ffb2280831f2, type: 3}
@@ -5908,6 +5919,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2276511846887355890, guid: 807b5cf161ec42d4486dcad0b02ed21c, type: 3}
+    - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
@@ -5923,6 +5938,22 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: timeMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: titleText
+      value: 
+      objectReference: {fileID: 820760237}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: inkJSONAsset
+      value: 
+      objectReference: {fileID: 4900000, guid: 143a0a1c6a2c44e438e203b2298b9a05, type: 3}
     - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: leftSlot.defaultTitle
       value: Surname Inaba
@@ -5933,12 +5964,48 @@ PrefabInstance:
       objectReference: {fileID: 2128011778}
     - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: leftSlot.characterName
-      value: Masakuni
+      value: Masahiro
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: leftSlot.portraitImage
+      value: 
+      objectReference: {fileID: 2128011781}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: rightSlot.defaultTitle
+      value: Choshu Samurai
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: rightSlot.portraitRect
+      value: 
+      objectReference: {fileID: 2128011779}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: rightSlot.characterName
+      value: ???
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: rightSlot.portraitImage
+      value: 
+      objectReference: {fileID: 2128011780}
+    - target: {fileID: 3270057383574516094, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 468.171
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270057383574516094, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 582.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270057383574516094, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -731
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270057383574516094, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -56.293
       objectReference: {fileID: 0}
     - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2388150052984666650, guid: 42d6e2c20a2ca1546a032c75e8cdc333, type: 3}
     - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -5958,6 +6025,30 @@ PrefabInstance:
     - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_PreserveAspect
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 612.342
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 818.419
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 683
+      objectReference: {fileID: 0}
+    - target: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000015259
       objectReference: {fileID: 0}
     - target: {fileID: 5948119564169140612, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_Name
@@ -5994,6 +6085,33 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3270057383574516094, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
   m_PrefabInstance: {fileID: 2128011775}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &2128011779 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5024351161551906452, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+  m_PrefabInstance: {fileID: 2128011775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2128011780 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+  m_PrefabInstance: {fileID: 2128011775}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+--- !u!114 &2128011781 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+  m_PrefabInstance: {fileID: 2128011775}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

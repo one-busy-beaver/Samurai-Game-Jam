@@ -6,16 +6,28 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: ef5f9091556c4164a8fdc1338523eb76
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/DeathScene.unity
     guid: 7242d90486e42ab479744fdf212b2dcf
   - enabled: 1
     path: Assets/Scenes/CreditsScene.unity
     guid: 47a3f0ffd2a049243a8549e5b8d2bcaf
+  - enabled: 1
+    path: Assets/Scenes/PreBattleScene.unity
+    guid: bafd72334cefc4245895ed3cfce9a3be
+  - enabled: 1
+    path: Assets/Scenes/GoodEnd.unity
+    guid: c3e697eddb81d4349bd1f84cb16d1efe
+  - enabled: 1
+    path: Assets/Scenes/GoodEnd2.unity
+    guid: ce2cba548df4b244d9eeb2f1bd9233a0
+  - enabled: 1
+    path: Assets/Scenes/PreDeathScene.unity
+    guid: 7f52cf268b4b1754aa4fbd083099a376
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17fea2e35bf15e4685de1d58b3f2aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueTypewriter
-  inkJSONAsset: {fileID: 4900000, guid: 4ca6583d506cf5241bc03b6b61a2cfe4, type: 3}
+  inkJSONAsset: {fileID: 4900000, guid: 87a5476d87be49046a129d8d770bd29e, type: 3}
   playOnStart: 1
   canvasGroup: {fileID: 29726528}
   fader: {fileID: 29726527}
@@ -273,6 +273,8 @@ MonoBehaviour:
   charactersPerSecond: 35
   punctuationPause: 0.2
   fadeDuration: 0.5
+  nextSceneOnComplete: MainMenu
+  sceneFadeDuration: 1
   colorPalette:
   - key: white
     color:

@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] List<GameObject> waveGroups;
     [SerializeField] float delayBetweenWaves = 1f;
+
+    [Header("End of Waves Scene Transition")]
+    [SerializeField] private string nextSceneName = "GoodEnd";
+    [SerializeField] private float transitionDuration = 1f;
 
     void Start()
     {
@@ -29,6 +34,20 @@ public class WaveManager : MonoBehaviour
 
             group.SetActive(false);
             yield return new WaitForSeconds(delayBetweenWaves);
+        }
+
+        // Trigger scene transition once all waves are cleared
+        if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            if (SceneFader.Instance != null)
+            {
+                SceneFader.Instance.FadeAndLoad(nextSceneName, transitionDuration);
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(nextSceneName);
+            }
         }
     }
 

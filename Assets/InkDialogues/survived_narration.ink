@@ -15,4 +15,10 @@ I believe that with the help of my message, we are one step closer to the Imperi
 # color: white
 I must travel to Edo as a messenger to inform our Imperial forces of the Shogunates desperate plan... to burn Edo to the ground.
 
+# color: yellow
+...
+
+# color: yellow
+Thank you for playing!
+
 -> END

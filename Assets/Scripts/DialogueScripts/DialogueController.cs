@@ -8,6 +8,12 @@ using Ink.Runtime;
 
 public class DialogueController : MonoBehaviour
 {
+    public enum TimeScaleMode
+    {
+        NormalTime,
+        FreezeTimeDuringDialogue
+    }
+
     [System.Serializable]
     public class CharacterSlot
     {
@@ -21,6 +27,10 @@ public class DialogueController : MonoBehaviour
 
     [Header("Ink File")]
     [SerializeField] private TextAsset inkJSONAsset;
+
+    [Header("Time Settings")]
+    [Tooltip("FreezeTimeDuringDialogue sets Time.timeScale to 0 while reading, then restores to 1 when finished.")]
+    [SerializeField] private TimeScaleMode timeMode = TimeScaleMode.NormalTime;
 
     [Header("UI References")]
     [SerializeField] private GameObject dialoguePanel;
@@ -70,6 +80,12 @@ public class DialogueController : MonoBehaviour
         isStoryActive = true;
         isEnding = false;
         lastSpeaker = "";
+
+        // Freeze in-game time if requested
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
+        {
+            Time.timeScale = 0f;
+        }
 
         if (dialoguePanel != null)
             dialoguePanel.SetActive(true);
@@ -296,6 +312,12 @@ public class DialogueController : MonoBehaviour
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 
+        // Restore game time if we froze it
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
+        {
+            Time.timeScale = 1f;
+        }
+
         if (!string.IsNullOrEmpty(nextSceneOnComplete))
         {
             if (SceneFader.Instance != null)
@@ -307,6 +329,15 @@ public class DialogueController : MonoBehaviour
                 Time.timeScale = 1f;
                 UnityEngine.SceneManagement.SceneManager.LoadScene(nextSceneOnComplete);
             }
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Safety check: ensure game time is unpaused if the dialogue object gets disabled unexpectedly
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && Time.timeScale == 0f)
+        {
+            Time.timeScale = 1f;
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
     // MUST be public so the button can find it
-    [SerializeField] private string gameplaySceneName = "SampleScene";
+    [SerializeField] private string gameplaySceneName = "PreBattleScene";
     [SerializeField] private float transitionDuration = 1f;
     [SerializeField] private DialogueTypewriter narrativeScreen;
     [SerializeField] private TextAsset introductionLore;
@@ -18,13 +18,13 @@ public class MainMenuController : MonoBehaviour
             narrativeScreen.PlayNarrative(introductionLore, () => 
             {
                 Debug.Log("Intro done!!");
-                LoadGameplayScene();
+                LoadPreBattleDialogue();
             });
         }
         else
         {
             // fallback if none of the above are assigned
-            LoadGameplayScene();
+            LoadPreBattleDialogue();
         }
     }
     public void OnExitClick()
@@ -38,12 +38,7 @@ public class MainMenuController : MonoBehaviour
         #endif
 
         // actually quit
-        // Application.Quit();
-    }
-
-    public void OnOptions()
-    {
-        // shit here
+        Application.Quit();
     }
 
     public void OnCredits()
@@ -52,15 +47,11 @@ public class MainMenuController : MonoBehaviour
         
     }
 
-    private void LoadGameplayScene()
+    private void LoadPreBattleDialogue()
     {
-        if (SceneFader.Instance != null)
-        {
-            SceneFader.Instance.FadeAndLoad(gameplaySceneName, transitionDuration);
-        }
-        else
-        {
-            SceneManager.LoadScene(gameplaySceneName);
-        }
+        // The screen is already fully covered by NarrativeOverlay's black backdrop,
+        // so loading directly prevents any flash of the menu.
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(gameplaySceneName);
     }
 }
