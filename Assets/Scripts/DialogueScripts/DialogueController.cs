@@ -56,6 +56,8 @@ public class DialogueController : MonoBehaviour
     private bool isEnding = false;
     private string lastSpeaker = "";
 
+    public static bool IsDialogueActive { get; private set; }
+
     private void Awake()
     {
         // Cache original anchored positions so bounce routines return accurately
@@ -81,7 +83,9 @@ public class DialogueController : MonoBehaviour
         isEnding = false;
         lastSpeaker = "";
 
-        // Freeze in-game time if requested
+        // Track dialogue state globally
+        IsDialogueActive = true;
+
         if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
         {
             Time.timeScale = 0f;
@@ -291,12 +295,12 @@ public class DialogueController : MonoBehaviour
         return "";
     }
 
-    private IEnumerator EndStoryRoutine()
+private IEnumerator EndStoryRoutine()
     {
         isEnding = true;
         isStoryActive = false;
+        IsDialogueActive = false; // Mark dialogue as finished
 
-        // Hide portraits cleanly with dialogue box
         SetSlotActive(leftSlot, false);
         SetSlotActive(rightSlot, false);
 
@@ -312,8 +316,8 @@ public class DialogueController : MonoBehaviour
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 
-        // Restore game time if we froze it
-        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
+        // Only restore time if game isn't currently paused in PauseController
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && !PauseController.IsGamePaused)
         {
             Time.timeScale = 1f;
         }
@@ -334,8 +338,9 @@ public class DialogueController : MonoBehaviour
 
     private void OnDisable()
     {
-        // Safety check: ensure game time is unpaused if the dialogue object gets disabled unexpectedly
-        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && Time.timeScale == 0f)
+        IsDialogueActive = false;
+
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && Time.timeScale == 0f && !PauseController.IsGamePaused)
         {
             Time.timeScale = 1f;
         }

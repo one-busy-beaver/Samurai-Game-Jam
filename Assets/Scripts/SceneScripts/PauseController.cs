@@ -32,7 +32,15 @@ public class PauseController : MonoBehaviour
             optionsPanel.SetActive(false);
         }
 
-        Time.timeScale = IsGamePaused ? 0 : 1;
+        // Freeze time when paused; when unpaused, only unfreeze if dialogue isn't playing
+        if (IsGamePaused)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = DialogueController.IsDialogueActive ? 0f : 1f;
+        }
     }
 
     public void OnClickResume()
@@ -42,8 +50,7 @@ public class PauseController : MonoBehaviour
 
     public void OnClickMainMenu()
     {
-        Time.timeScale = 1;
-
+        Time.timeScale = 1f;
         IsGamePaused = false;
 
         if (SceneFader.Instance != null)
@@ -54,8 +61,6 @@ public class PauseController : MonoBehaviour
         {
             SceneManager.LoadScene("MainMenu");
         }
-        // when player clicks MainMenu
-        SceneManager.LoadScene("MainMenu");
     }
 
     public void OnClickOptions()
@@ -76,13 +81,10 @@ public class PauseController : MonoBehaviour
 
     public void OnClickQuit()
     {
-        // quit never saves
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         #endif
 
-        // actually quits
         Application.Quit();
     }
-
 }

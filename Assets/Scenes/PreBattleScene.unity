@@ -236,6 +236,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: titleText
+      value: 
+      objectReference: {fileID: 1357008076}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: inkJSONAsset
       value: 
       objectReference: {fileID: 4900000, guid: ad2a538fb62e14749bd320739c6ea40a, type: 3}
@@ -700,6 +704,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1883885580491381556, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
   m_PrefabInstance: {fileID: 849576274}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1357008076 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 926392233379648596, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+  m_PrefabInstance: {fileID: 849576274}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &1312926356598749707
 PrefabInstance:
   m_ObjectHideFlags: 0
