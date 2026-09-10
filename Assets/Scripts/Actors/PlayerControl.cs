@@ -3,6 +3,11 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+UnityEngine.WebGLInput.captureAllKeyboardInput = false; // Prevents browser from swallowing hotkeys
+QualitySettings.pixelLightCount = 4;
+#endif
+
 public class PlayerControl : MonoBehaviour
 {
     [Header("Move Settings")]

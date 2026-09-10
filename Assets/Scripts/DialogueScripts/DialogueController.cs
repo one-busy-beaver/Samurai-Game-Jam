@@ -56,8 +56,6 @@ public class DialogueController : MonoBehaviour
     private bool isEnding = false;
     private string lastSpeaker = "";
 
-    public static bool IsDialogueActive { get; private set; }
-
     private void Awake()
     {
         // Cache original anchored positions so bounce routines return accurately
@@ -83,9 +81,7 @@ public class DialogueController : MonoBehaviour
         isEnding = false;
         lastSpeaker = "";
 
-        // Track dialogue state globally
-        IsDialogueActive = true;
-
+        // Freeze in-game time if requested
         if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
         {
             Time.timeScale = 0f;
@@ -295,12 +291,12 @@ public class DialogueController : MonoBehaviour
         return "";
     }
 
-private IEnumerator EndStoryRoutine()
+    private IEnumerator EndStoryRoutine()
     {
         isEnding = true;
         isStoryActive = false;
-        IsDialogueActive = false; // Mark dialogue as finished
 
+        // Hide portraits cleanly with dialogue box
         SetSlotActive(leftSlot, false);
         SetSlotActive(rightSlot, false);
 
@@ -316,8 +312,8 @@ private IEnumerator EndStoryRoutine()
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 
-        // Only restore time if game isn't currently paused in PauseController
-        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && !PauseController.IsGamePaused)
+        // Restore game time if we froze it
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue)
         {
             Time.timeScale = 1f;
         }
@@ -338,9 +334,8 @@ private IEnumerator EndStoryRoutine()
 
     private void OnDisable()
     {
-        IsDialogueActive = false;
-
-        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && Time.timeScale == 0f && !PauseController.IsGamePaused)
+        // Safety check: ensure game time is unpaused if the dialogue object gets disabled unexpectedly
+        if (timeMode == TimeScaleMode.FreezeTimeDuringDialogue && Time.timeScale == 0f)
         {
             Time.timeScale = 1f;
         }
