@@ -44,6 +44,7 @@ public class MainMenuController : MonoBehaviour
     public void OnCredits()
     {
         // names of everyone!!!
+         SceneManager.LoadScene("CreditsScene");
         
     }
 

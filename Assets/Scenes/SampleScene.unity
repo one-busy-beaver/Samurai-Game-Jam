@@ -2891,6 +2891,8 @@ MonoBehaviour:
   - {fileID: 1192682418}
   - {fileID: 1699861413}
   delayBetweenWaves: 1
+  nextSceneName: GoodEnd
+  transitionDuration: 1
 --- !u!1 &1090028157
 GameObject:
   m_ObjectHideFlags: 0

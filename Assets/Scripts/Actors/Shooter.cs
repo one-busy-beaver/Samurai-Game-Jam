@@ -7,7 +7,7 @@ public class Shooter : MonoBehaviour
 {
     public static Transform PlayerTarget; // player's location
 
-     [Header("Bullet Settings")]
+    [Header("Bullet Settings")]
     [SerializeField] BulletVolley volley;
     [SerializeField] Bullet bulletPrefab;
     [SerializeField] float spawnDisplacement; // Units forward along the barrel
@@ -23,6 +23,10 @@ public class Shooter : MonoBehaviour
     [SerializeField] bool alwaysAimsPlayer;
     [SerializeField] float turnSpeed = 60f;
 
+    [Header("Visual & Facing Settings")]
+    [Tooltip("Check this if your sprite assets are drawn facing LEFT in the source PNG files.")]
+    [SerializeField] private bool spriteFacesLeftByDefault = true;
+
     [Header("Walk Settings")]
     [SerializeField] bool canWalk;
     [SerializeField] float walkSpeed = 5f;
@@ -30,14 +34,26 @@ public class Shooter : MonoBehaviour
     [SerializeField] float stopDistance = 4f; // Between shooter and player
     [SerializeField] float stopThreshold = 0.05f;
 
+    [Header("Spawn Origin")]
+    [SerializeField] Transform firePoint; // spawn location
+
     enum State { Entering, Fighting, Exiting }
 
-    Vector2 facing = Vector2.right; 
     bool isFiring;
     bool isBursting;
     int breakCount;
     Vector2 exitPos; // Initial spawning and final location (off screen)
     State state = State.Entering;
+
+    // Internal aim & visual tracking
+    private Quaternion currentAimRotation = Quaternion.identity;
+    private Vector3 initialScale;
+    private bool isFacingRight = true;
+
+    void Awake()
+    {
+        initialScale = transform.localScale;
+    }
 
     void Start()
     {
@@ -49,6 +65,10 @@ public class Shooter : MonoBehaviour
             if (player != null)
                 PlayerTarget = player.transform;
         }
+
+        // Keep root upright
+        transform.rotation = Quaternion.identity;
+
         if (aimsPlayer)
             Aim(true);
     }
@@ -71,14 +91,12 @@ public class Shooter : MonoBehaviour
     {
         switch (state)
         {
-            // Move to firing position
             case State.Entering:
-            Aim();
+                Aim();
                 if (WalkTowards(startPos))
                     state = State.Fighting;
                 break;
 
-            // Move towards player only between bursts
             case State.Fighting:
                 if (!canWalk || isBursting) return;
 
@@ -88,7 +106,6 @@ public class Shooter : MonoBehaviour
                 WalkTowards((Vector2)PlayerTarget.position, stopDistance);
                 break;
 
-            // Retreat to spawning location; OnBecameInvisible despawns it on the way out
             case State.Exiting:
                 if (WalkTowards(exitPos))
                     Destroy(gameObject);
@@ -111,17 +128,36 @@ public class Shooter : MonoBehaviour
 
     void Aim(bool snap = false)
     {
+        if (PlayerTarget == null) return;
+
         Vector2 direction = (Vector2)PlayerTarget.position - (Vector2)transform.position;
         if (direction == Vector2.zero) return;
 
-        // Calculate angle in degrees
+        // 1. Calculate trajectory angle
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
 
-        if (snap) 
-            transform.rotation = targetRotation;
+        if (snap)
+            currentAimRotation = targetRotation;
         else
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            currentAimRotation = Quaternion.RotateTowards(currentAimRotation, targetRotation, turnSpeed * Time.deltaTime);
+
+        // 2. Derive facing strictly from the current aim vector
+        Vector2 aimHeading = (Vector2)(currentAimRotation * Vector3.right);
+        UpdateFacingDirection(aimHeading.x >= 0f);
+    }
+
+    void UpdateFacingDirection(bool faceRight)
+    {
+        isFacingRight = faceRight;
+
+        // If drawn facing left, flip when facing right; otherwise flip when facing left
+        bool shouldFlip = spriteFacesLeftByDefault ? faceRight : !faceRight;
+
+        // Flipping parent's localScale.x cleanly mirrors the body, the gun sprite, and firePoint together
+        Vector3 scale = transform.localScale;
+        scale.x = shouldFlip ? -Mathf.Abs(initialScale.x) : Mathf.Abs(initialScale.x);
+        transform.localScale = scale;
     }
 
     void HandleFire()
@@ -157,22 +193,25 @@ public class Shooter : MonoBehaviour
     {
         List<BulletSpawnInfo> spawns = volley.Generate();
 
+        Vector2 originPos = firePoint != null ? (Vector2)firePoint.position : (Vector2)transform.position;
+        Quaternion originRot = currentAimRotation;
+
         for (int i = 0; i < spawns.Count; i++)
         {
             BulletSpawnInfo info = spawns[i];
 
-            // Position and rotation information from BulletVolley
-            Vector2 worldPos = (Vector2)transform.position + (Vector2)(transform.rotation * info.relativePosition);
-            Quaternion bulletRot = transform.rotation * Quaternion.Euler(0, 0, info.angle);
+            // Bullet orientation along the aim rotation
+            Quaternion bulletRot = originRot * Quaternion.Euler(0, 0, info.angle);
 
-            // Push forward along the bullet's own heading, so the offset follows
-            // the barrel regardless of how the shooter is rotated
-            Vector2 displacementOffset = (Vector2)(bulletRot * Vector3.right) * spawnDisplacement;
-            Vector2 finalPos = worldPos + displacementOffset;
+            // Vector3.right is world forward angle (0 degrees) rotated by bulletRot
+            Vector2 forwardDir = (Vector2)(bulletRot * Vector3.right);
+
+            Vector2 worldPos = originPos + (Vector2)(originRot * info.relativePosition);
+            Vector2 finalPos = worldPos + (forwardDir * spawnDisplacement);
 
             Bullet bullet = Instantiate(bulletPrefab, finalPos, bulletRot);
             bullet.Motion = info.motion;
-            bullet.Heading = (Vector2)(bulletRot * facing);
+            bullet.Heading = forwardDir; // Fires forward along true aim trajectory
         }
     }
 
