@@ -18,10 +18,10 @@ Yodo?! You dare threaten the Emperor?! Shogunate scum!!
 You must let me pass, as this letter will alert of a Shogunate attack on Kyoto.
 
 # speaker: ???
-Many merchants and travelers have revealed themselves as spies. Tell me who you are...
+Many merchants and travelers have revealed themselves as spies. Turn back now...
 
 # speaker: ???
-NOW!!!
+OR DIE!!!
 
 # speaker: Masahiro
 I must deliver my message, even if it means dying by your hand.

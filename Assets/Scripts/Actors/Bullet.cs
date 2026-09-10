@@ -31,17 +31,21 @@ public class Bullet : MonoBehaviour
         transform.position = startPosition + offset;
     }
 
-    void OnTriggerStay2D(Collider2D collision)
+    // Switched to OnTriggerEnter2D so impact triggers once immediately upon contact
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             PlayerControl player = collision.GetComponent<PlayerControl>();
-            if (player != null && !player.IsInvincible)
+            if (player != null)
             {
-                // Get the closest point on the player's collider to the hitbox's center
                 Vector2 hitPoint = collision.ClosestPoint(transform.position);
+                // TakeDamage internally checks 'if (IsInvincible) return;' so damage is safely ignored during dashes
                 player.TakeDamage(hitPoint, damage);
             }
+
+            // Always destroy the bullet on contact so it doesn't linger and hit you after the dash ends
+            Destroy(gameObject);
         }
     }
 

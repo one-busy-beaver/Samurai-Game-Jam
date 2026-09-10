@@ -3,6 +3,11 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+UnityEngine.WebGLInput.captureAllKeyboardInput = false; // Prevents browser from swallowing hotkeys
+QualitySettings.pixelLightCount = 4;
+#endif
+
 public class PlayerControl : MonoBehaviour
 {
     [Header("Move Settings")]
@@ -45,7 +50,11 @@ public class PlayerControl : MonoBehaviour
     // Player state
     bool isDashing;
     bool isRecoiling;
-    public bool IsInvincible { get; private set; }
+    // public bool IsInvincible { get; private set; }
+
+    private bool isDashInvincible;
+    private bool isDamageInvincible;
+    public bool IsInvincible => isDashInvincible || isDamageInvincible;
     public int CurrentHealth { get; private set; }
 
     // Vars to keep player in-bounds
@@ -149,29 +158,64 @@ public class PlayerControl : MonoBehaviour
             StartCoroutine(DashRoutine());
     }
 
+    // IEnumerator DashRoutine()
+    // {
+    //     isDashing = true;
+    //     IsInvincible = true;
+    //     canDash = false;
+    //     Vector2 dashDir = moveInput;
+    //     if (dashDir == Vector2.zero) dashDir = lastMoveDirection;
+
+    //     // Increase velocity to dash mode
+    //     rb.linearVelocity = dashDir * dashSpeed;
+
+    //     float timer = 0f;
+    //     while (timer < dashTime)
+    //     {
+    //         // Can change direction mid-dash (i.e. direction not locked)
+    //         if (moveInput.magnitude != 0)
+    //             rb.linearVelocity = moveInput * dashSpeed;
+
+    //         timer += Time.deltaTime;
+    //         yield return null;
+    //     }
+    //     isDashing = false;
+    //     IsInvincible = false;
+    //     yield return new WaitForSeconds(dashCooldown);
+    //     canDash = true;
+    // }
+
     IEnumerator DashRoutine()
     {
         isDashing = true;
-        IsInvincible = true;
+        isDashInvincible = true;
         canDash = false;
-        Vector2 dashDir = moveInput;
-        if (dashDir == Vector2.zero) dashDir = lastMoveDirection;
 
-        // Increase velocity to dash mode
+        // Visual feedback: make player semi-transparent while invincible
+        Color c = sr.color;
+        c.a = 0.5f;
+        sr.color = c;
+
+        Vector2 dashDir = moveInput == Vector2.zero ? lastMoveDirection : moveInput;
         rb.linearVelocity = dashDir * dashSpeed;
 
         float timer = 0f;
         while (timer < dashTime)
         {
-            // Can change direction mid-dash (i.e. direction not locked)
             if (moveInput.magnitude != 0)
                 rb.linearVelocity = moveInput * dashSpeed;
 
             timer += Time.deltaTime;
             yield return null;
         }
+
+        // Reset visual feedback
+        c.a = 1f;
+        sr.color = c;
+
         isDashing = false;
-        IsInvincible = false;
+        isDashInvincible = false;
+
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
@@ -246,26 +290,44 @@ public class PlayerControl : MonoBehaviour
         StartCoroutine(InvincibleRoutine());
     }
 
+    // IEnumerator InvincibleRoutine()
+    // {
+    //     IsInvincible = true;
+
+    //     float timer = 0f;
+    //     while (timer < invincibleTime)
+    //     {
+    //         // PingPong-ing from 0.0 to 1.0
+    //         float flashT = Mathf.PingPong(timer * flashMultiplier, 1f);
+
+    //         // lerp between base white and red
+    //         sr.color = Color.Lerp(normalColor, damageFlashColor, flashT);
+
+    //         timer += Time.deltaTime;
+    //         yield return null;
+    //     }
+
+    //     // reset cleanly back to full whtie
+    //     sr.color = normalColor;
+    //     IsInvincible = false;
+    // }
+
     IEnumerator InvincibleRoutine()
     {
-        IsInvincible = true;
+        isDamageInvincible = true;
 
         float timer = 0f;
         while (timer < invincibleTime)
         {
-            // PingPong-ing from 0.0 to 1.0
             float flashT = Mathf.PingPong(timer * flashMultiplier, 1f);
-
-            // lerp between base white and red
             sr.color = Color.Lerp(normalColor, damageFlashColor, flashT);
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        // reset cleanly back to full whtie
         sr.color = normalColor;
-        IsInvincible = false;
+        isDamageInvincible = false;
     }
 
     private void UpdateCameraBounds()
