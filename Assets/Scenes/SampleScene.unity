@@ -5907,6 +5907,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216840695567622740, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: leftSlot.defaultTitle
+      value: Surname Inaba
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: leftSlot.portraitRect
+      value: 
+      objectReference: {fileID: 2128011778}
+    - target: {fileID: 2681795281130057024, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: leftSlot.characterName
+      value: Masakuni
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875453713286903448, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5948119564169140612, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_Name
       value: TextBoxUI
@@ -5937,6 +5989,11 @@ SortingGroup:
   m_SortingOrder: 0
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!224 &2128011778 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3270057383574516094, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
+  m_PrefabInstance: {fileID: 2128011775}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

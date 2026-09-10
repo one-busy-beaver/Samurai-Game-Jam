@@ -12,6 +12,7 @@ public class DialogueController : MonoBehaviour
     public class CharacterSlot
     {
         public string characterName;         // Matches "# speaker: Name"
+        public string defaultTitle;          // e.g. "Commander", "Haruto", "Lead Engineer"
         public RectTransform portraitRect;    // The RectTransform of this portrait
         public Image portraitImage;          // The Image component for visuals
         [HideInInspector] public Vector2 defaultAnchoredPos;
@@ -24,6 +25,7 @@ public class DialogueController : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI titleText;      // Context, surname, or rank/role
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private UIFader boxFader;
 
@@ -103,9 +105,18 @@ public class DialogueController : MonoBehaviour
 
             string speakerName = ParseTag(tags, "speaker");
             string showDirective = ParseTag(tags, "show");
+            
+            // Check for dynamic title tag (# title: ... or # context: ...)
+            string customTitle = ParseTag(tags, "title");
+            if (string.IsNullOrEmpty(customTitle))
+            {
+                customTitle = ParseTag(tags, "context");
+            }
 
+            // Update UI
             nameText.text = speakerName;
             dialogueText.text = nextLine;
+            UpdateTitleUI(speakerName, customTitle);
 
             // Handle showing/hiding portraits
             HandlePortraitVisibility(speakerName, showDirective);
@@ -121,6 +132,39 @@ public class DialogueController : MonoBehaviour
         {
             StartCoroutine(EndStoryRoutine());
         }
+    }
+
+    private void UpdateTitleUI(string speaker, string explicitTitle)
+    {
+        if (titleText == null) return;
+
+        // 1. If Ink explicitly gave a # title: or # context: tag, use that
+        if (!string.IsNullOrEmpty(explicitTitle))
+        {
+            titleText.text = explicitTitle;
+            titleText.gameObject.SetActive(true);
+            return;
+        }
+
+        // 2. Check if the matching CharacterSlot has a default title configured
+        string fallbackTitle = GetDefaultTitle(speaker);
+        if (!string.IsNullOrEmpty(fallbackTitle))
+        {
+            titleText.text = fallbackTitle;
+            titleText.gameObject.SetActive(true);
+            return;
+        }
+
+        // 3. Otherwise hide/clear the field so it doesn't show stale text
+        titleText.text = "";
+        titleText.gameObject.SetActive(false);
+    }
+
+    private string GetDefaultTitle(string speaker)
+    {
+        if (IsSlotSpeaker(leftSlot, speaker)) return leftSlot.defaultTitle;
+        if (IsSlotSpeaker(rightSlot, speaker)) return rightSlot.defaultTitle;
+        return "";
     }
 
     private void HandlePortraitVisibility(string speaker, string showDirective)
@@ -239,6 +283,9 @@ public class DialogueController : MonoBehaviour
         // Hide portraits cleanly with dialogue box
         SetSlotActive(leftSlot, false);
         SetSlotActive(rightSlot, false);
+
+        if (titleText != null)
+            titleText.gameObject.SetActive(false);
 
         if (boxFader != null)
         {
