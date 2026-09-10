@@ -7,7 +7,7 @@ public class MainMenuController : MonoBehaviour
 {
     // MUST be public so the button can find it
     [SerializeField] private string gameplaySceneName = "PreBattleScene";
-    [SerializeField] private float transitionDuration = 1f;
+    // [SerializeField] private float transitionDuration = 1f;
     [SerializeField] private DialogueTypewriter narrativeScreen;
     [SerializeField] private TextAsset introductionLore;
 
