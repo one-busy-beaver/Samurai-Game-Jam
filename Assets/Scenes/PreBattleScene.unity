@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 275136421558219435, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_MatchWidthOrHeight
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1883885580491381556, guid: 5419836b1e274304788c0d8f3dc83658, type: 3}
       propertyPath: m_Pivot.x
